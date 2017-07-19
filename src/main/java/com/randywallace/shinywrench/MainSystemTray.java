@@ -41,7 +41,7 @@ public class MainSystemTray {
 		if (this.systemTray == null) {
 			throw new RuntimeException("Unable to load SystemTray!");
 		}
-
+		SystemTray.ENABLE_SHUTDOWN_HOOK = false;
 		this.systemTray.setTooltip("Shiny Wrench");
 		this.systemTray.setImage(LT_GRAY_TRAIN);
 		this.systemTray.setStatus("No Mail");
@@ -126,6 +126,13 @@ public class MainSystemTray {
 			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				MenuItem source = (MenuItem) e.getSource();
 				source.getParent().remove();
+			}
+		}));
+
+		this.systemTray.getMenu().add(new MenuItem("Show", new ActionListener() {
+			@Override
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
+				MainSystemTray.this.primaryStage.show();
 			}
 		}));
 

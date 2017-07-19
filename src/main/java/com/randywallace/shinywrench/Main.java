@@ -5,8 +5,8 @@ import java.io.IOException;
 import com.randywallace.shinywrench.model.SystemProfile;
 import com.randywallace.shinywrench.view.ProfileOverviewController;
 
-import dorkbox.util.OS;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -22,6 +22,8 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
+		Platform.setImplicitExit(false);
+
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Shiny Wrench - Developer AWS Credentials Configurator");
 
@@ -87,10 +89,6 @@ public class Main extends Application {
 	}
 
 	public static void main(String[] args) {
-		if (OS.isMacOsX() && OS.javaVersion <= 7) {
-			System.setProperty("javafx.macosx.embedded", "true");
-			java.awt.Toolkit.getDefaultToolkit();
-		}
 		launch(args);
 	}
 
