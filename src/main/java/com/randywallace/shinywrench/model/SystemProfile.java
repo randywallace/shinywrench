@@ -1,5 +1,6 @@
 package com.randywallace.shinywrench.model;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Map.Entry;
@@ -24,64 +25,74 @@ public class SystemProfile {
 		this.config_ini = new Ini();
 		switch (System.getProperty("os.name")) {
 		case "Linux":
+		case "Mac OS X":
 			this.credential_file_path = System.getenv("HOME") + "/.aws/credentials";
 			this.config_file_path = System.getenv("HOME") + "/.aws/config";
+			break;
+		default:
+			//System.out.println(this.credential_file_path + " " + this.config_file_path);
+		}
+		try {
+			this.credential_ini.load(new FileReader(this.credential_file_path));
+			this.config_ini.load(new FileReader(this.config_file_path));
 
-			try {
-				this.credential_ini.load(new FileReader(this.credential_file_path));
-				this.config_ini.load(new FileReader(this.config_file_path));
-
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// System.out.println(credential_ini.get("default").toString());
+		for (Entry<String, Section> entry : this.config_ini.entrySet()) {
+			String local_region = entry.getValue().get("region");
+			if (local_region.isEmpty()) {
+				local_region = "us-east-1";
 			}
-			// System.out.println(credential_ini.get("default").toString());
-			for (Entry<String, Section> entry : this.config_ini.entrySet()) {
+			String local_profile = entry.getKey().toString();
+			String[] local_profile_split = local_profile.split(" ");
+			if (local_profile_split.length == 2) {
+				local_profile = local_profile_split[1];
+			}
+
+			this.profileData.add(
+					new Profile(
+							local_profile,
+							entry.getValue().get("aws_access_key_id"),
+							entry.getValue().get("aws_secret_access_key"),
+							local_region,
+							entry.getValue().get("output"),
+							entry.getValue().get("aws_session_token"),
+							entry.getValue().get("role_arn"),
+							entry.getValue().get("source_profile"),
+							entry.getValue().get("mfa_serial"),
+							entry.getValue().get("expiration")));
+		}
+
+		for (Entry<String, Section> entry : this.credential_ini.entrySet()) {
+			Boolean updated = false;
+			for (Profile profile : this.profileData) {
+				System.out.println(profile.getProfile().getValue() + " " + entry.getKey());
+				if (profile.getProfile().getValue().equals(entry.getKey())) {
+					profile.setAccess_key_id(new SimpleStringProperty(entry.getValue().get("aws_access_key_id")));
+					profile.setSecret_access_key(new SimpleStringProperty(entry.getValue().get("aws_secret_access_key")));
+					profile.setSession_token(new SimpleStringProperty(entry.getValue().get("aws_session_token")));
+					updated = true;
+				}
+			}
+			if (!updated) {
 				this.profileData.add(
 						new Profile(
 								entry.getKey().toString(),
 								entry.getValue().get("aws_access_key_id"),
 								entry.getValue().get("aws_secret_access_key"),
-								entry.getValue().get("region"),
-								entry.getValue().get("output"),
+								"us-east-1",
+								null,
 								entry.getValue().get("aws_session_token"),
-								entry.getValue().get("role_arn"),
-								entry.getValue().get("source_profile"),
-								entry.getValue().get("mfa_serial"),
-								entry.getValue().get("expiration")));
+								null,
+								null,
+								null,
+								null));
 			}
-
-			for (Entry<String, Section> entry : this.credential_ini.entrySet()) {
-				Boolean updated = false;
-				for (Profile profile : this.profileData) {
-					System.out.println(profile.getProfile().getValue() + " " + entry.getKey());
-					if (profile.getProfile().getValue().equals(entry.getKey())) {
-						profile.setAccess_key_id(new SimpleStringProperty(entry.getValue().get("aws_access_key_id")));
-						profile.setSecret_access_key(new SimpleStringProperty(entry.getValue().get("aws_secret_access_key")));
-						profile.setSession_token(new SimpleStringProperty(entry.getValue().get("aws_session_token")));
-						updated = true;
-					}
-				}
-				if (!updated) {
-					this.profileData.add(
-							new Profile(
-									entry.getKey().toString(),
-									entry.getValue().get("aws_access_key_id"),
-									entry.getValue().get("aws_secret_access_key"),
-									null,
-									null,
-									entry.getValue().get("aws_session_token"),
-									null,
-									null,
-									null,
-									null));
-				}
-			}
-			break;
-
-		default:
-			//System.out.println(this.credential_file_path + " " + this.config_file_path);
 		}
+
 		//System.out.println(this.profileData.toString());
 
 	}
@@ -104,5 +115,38 @@ public class SystemProfile {
 
 	public void setConfig_file_path(String config_file_path) {
 		this.config_file_path = config_file_path;
+	}
+
+	public void saveConfig() {
+		this.credential_ini = new Ini();
+		this.config_ini = new Ini();
+
+		for (Profile profile : this.profileData) {
+			String profile_name = profile.getProfile().getValue();
+			this.credential_ini.add(profile_name, "aws_access_key_id", profile.getAccess_key_id().getValue());
+			this.credential_ini.add(profile_name, "aws_secret_access_key", profile.getSecret_access_key().getValue());
+			this.credential_ini.add(profile_name, "aws_session_token", profile.getSession_token().getValue());
+			try {
+				this.credential_ini.store(new File(this.credential_file_path));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (!profile_name.equals("default")) {
+				profile_name = "profile " + profile_name;
+			}
+			this.config_ini.add(profile_name, "region", profile.getRegion().getValue());
+			this.config_ini.add(profile_name, "mfa_serial", profile.getMfa_serial().getValue());
+			this.config_ini.add(profile_name, "output", profile.getOutput().getValue());
+			this.config_ini.add(profile_name, "role_arn", profile.getRole_arn().getValue());
+			this.config_ini.add(profile_name, "source_profile", profile.getSource_profile().getValue());
+			this.config_ini.add(profile_name, "expiration", profile.getExpiration().getValue());
+			try {
+				this.config_ini.store(new File(this.config_file_path));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+		}
 	}
 }

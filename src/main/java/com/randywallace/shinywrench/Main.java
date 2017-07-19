@@ -24,15 +24,15 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		Platform.setImplicitExit(false);
 
+		this.systemProfile = new SystemProfile();
+
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Shiny Wrench - Developer AWS Credentials Configurator");
 
-		this.systemTray = new MainSystemTray(this.primaryStage);
+		this.systemTray = new MainSystemTray(this.primaryStage, this.systemProfile);
 		this.systemTray.doSetup();
 
 		initRootLayout();
-
-		this.systemProfile = new SystemProfile();
 
 		showProfileOverview();
 

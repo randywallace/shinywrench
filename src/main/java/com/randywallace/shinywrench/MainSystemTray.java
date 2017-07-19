@@ -3,7 +3,8 @@ package com.randywallace.shinywrench;
 import java.awt.event.ActionListener;
 import java.net.URL;
 
-import dorkbox.systemTray.Checkbox;
+import com.randywallace.shinywrench.model.SystemProfile;
+
 import dorkbox.systemTray.Menu;
 import dorkbox.systemTray.MenuItem;
 import dorkbox.systemTray.Separator;
@@ -27,12 +28,15 @@ public class MainSystemTray {
 
 	public static final URL BLACK_TRAIN = MainSystemTray.class.getResource("transport_train_station.p.000000.32.png");
 	public static final URL GREEN_TRAIN = MainSystemTray.class.getResource("transport_train_station.p.39AC39.32.png");
-	private ActionListener callbackGray;
+
+	// private ActionListener callbackGray;
 	private SystemTray systemTray;
 	private Stage primaryStage;
+	private SystemProfile systemProfile;
 
-	public MainSystemTray(Stage primaryStage) {
+	public MainSystemTray(Stage primaryStage, SystemProfile systemProfile) {
 		this.primaryStage = primaryStage;
+		this.systemProfile = systemProfile;
 	}
 
 	public void doSetup() {
@@ -46,48 +50,48 @@ public class MainSystemTray {
 		this.systemTray.setImage(LT_GRAY_TRAIN);
 		this.systemTray.setStatus("No Mail");
 
-		this.callbackGray = new ActionListener() {
-			@Override
-			public void actionPerformed(final java.awt.event.ActionEvent e) {
-				final MenuItem entry = (MenuItem) e.getSource();
-				MainSystemTray.this.systemTray.setStatus(null);
-				MainSystemTray.this.systemTray.setImage(BLACK_TRAIN);
-
-				entry.setCallback(null);
-				//	                systemTray.setStatus("Mail Empty");
-				MainSystemTray.this.systemTray.getMenu().remove(entry);
-				System.err.println("POW");
-			}
-		};
+		//		this.callbackGray = new ActionListener() {
+		//			@Override
+		//			public void actionPerformed(final java.awt.event.ActionEvent e) {
+		//				final MenuItem entry = (MenuItem) e.getSource();
+		//				MainSystemTray.this.systemTray.setStatus(null);
+		//				MainSystemTray.this.systemTray.setImage(BLACK_TRAIN);
+		//
+		//				entry.setCallback(null);
+		//				//	                systemTray.setStatus("Mail Empty");
+		//				MainSystemTray.this.systemTray.getMenu().remove(entry);
+		//				System.err.println("POW");
+		//			}
+		//		};
 
 		Menu mainMenu = this.systemTray.getMenu();
 
-		MenuItem greenEntry = new MenuItem("Green Mail", new ActionListener() {
-			@Override
-			public void actionPerformed(final java.awt.event.ActionEvent e) {
-				final MenuItem entry = (MenuItem) e.getSource();
-				MainSystemTray.this.systemTray.setStatus("Some Mail!");
-				MainSystemTray.this.systemTray.setImage(GREEN_TRAIN);
+		//		MenuItem greenEntry = new MenuItem("Green Mail", new ActionListener() {
+		//			@Override
+		//			public void actionPerformed(final java.awt.event.ActionEvent e) {
+		//				final MenuItem entry = (MenuItem) e.getSource();
+		//				MainSystemTray.this.systemTray.setStatus("Some Mail!");
+		//				MainSystemTray.this.systemTray.setImage(GREEN_TRAIN);
+		//
+		//				entry.setCallback(MainSystemTray.this.callbackGray);
+		//				entry.setImage(BLACK_MAIL);
+		//				entry.setText("Delete Mail");
+		//				//                systemTray.remove(menuEntry);
+		//			}
+		//		});
+		//		greenEntry.setImage(GREEN_MAIL);
+		//		// case does not matter
+		//		greenEntry.setShortcut('G');
+		//		mainMenu.add(greenEntry);
 
-				entry.setCallback(MainSystemTray.this.callbackGray);
-				entry.setImage(BLACK_MAIL);
-				entry.setText("Delete Mail");
-				//                systemTray.remove(menuEntry);
-			}
-		});
-		greenEntry.setImage(GREEN_MAIL);
-		// case does not matter
-		greenEntry.setShortcut('G');
-		mainMenu.add(greenEntry);
-
-		Checkbox checkbox = new Checkbox("Euro € Mail", new ActionListener() {
-			@Override
-			public void actionPerformed(final java.awt.event.ActionEvent e) {
-				System.err.println("Am i checked? " + ((Checkbox) e.getSource()).getChecked());
-			}
-		});
-		checkbox.setShortcut('€');
-		mainMenu.add(checkbox);
+		//		Checkbox checkbox = new Checkbox("Euro € Mail", new ActionListener() {
+		//			@Override
+		//			public void actionPerformed(final java.awt.event.ActionEvent e) {
+		//				System.err.println("Am i checked? " + ((Checkbox) e.getSource()).getChecked());
+		//			}
+		//		});
+		//		checkbox.setShortcut('€');
+		//		mainMenu.add(checkbox);
 
 		mainMenu.add(new Separator());
 
@@ -102,43 +106,48 @@ public class MainSystemTray {
 		//			}
 		//		}));
 
-		Menu submenu = new Menu("Options", BLUE_CAMPING);
-		submenu.setShortcut('t');
-		mainMenu.add(submenu);
-
-		MenuItem disableMenu = new MenuItem("Disable menu", BLACK_BUS, new ActionListener() {
-			@Override
-			public void actionPerformed(final java.awt.event.ActionEvent e) {
-				MenuItem source = (MenuItem) e.getSource();
-				source.getParent().setEnabled(false);
-			}
-		});
-		submenu.add(disableMenu);
-
-		submenu.add(new MenuItem("Hide tray", LT_GRAY_BUS, new ActionListener() {
-			@Override
-			public void actionPerformed(final java.awt.event.ActionEvent e) {
-				MainSystemTray.this.systemTray.setEnabled(false);
-			}
-		}));
-		submenu.add(new MenuItem("Remove menu", BLACK_FIRE, new ActionListener() {
-			@Override
-			public void actionPerformed(final java.awt.event.ActionEvent e) {
-				MenuItem source = (MenuItem) e.getSource();
-				source.getParent().remove();
-			}
-		}));
+		//		Menu submenu = new Menu("Options", BLUE_CAMPING);
+		//		submenu.setShortcut('t');
+		//		mainMenu.add(submenu);
+		//
+		//		MenuItem disableMenu = new MenuItem("Disable menu", BLACK_BUS, new ActionListener() {
+		//			@Override
+		//			public void actionPerformed(final java.awt.event.ActionEvent e) {
+		//				MenuItem source = (MenuItem) e.getSource();
+		//				source.getParent().setEnabled(false);
+		//			}
+		//		});
+		//		submenu.add(disableMenu);
+		//
+		//		submenu.add(new MenuItem("Hide tray", LT_GRAY_BUS, new ActionListener() {
+		//			@Override
+		//			public void actionPerformed(final java.awt.event.ActionEvent e) {
+		//				MainSystemTray.this.systemTray.setEnabled(false);
+		//			}
+		//		}));
+		//		submenu.add(new MenuItem("Remove menu", BLACK_FIRE, new ActionListener() {
+		//			@Override
+		//			public void actionPerformed(final java.awt.event.ActionEvent e) {
+		//				MenuItem source = (MenuItem) e.getSource();
+		//				source.getParent().remove();
+		//			}
+		//		}));
 
 		this.systemTray.getMenu().add(new MenuItem("Show", new ActionListener() {
 			@Override
 			public void actionPerformed(final java.awt.event.ActionEvent e) {
-				MainSystemTray.this.primaryStage.show();
+				if (MainSystemTray.this.primaryStage.isShowing()) {
+					MainSystemTray.this.primaryStage.toFront();
+				} else {
+					MainSystemTray.this.primaryStage.show();
+				}
 			}
 		}));
 
 		this.systemTray.getMenu().add(new MenuItem("Quit", new ActionListener() {
 			@Override
 			public void actionPerformed(final java.awt.event.ActionEvent e) {
+				MainSystemTray.this.systemProfile.saveConfig();
 				MainSystemTray.this.systemTray.shutdown();
 
 				if (!JavaFX.isEventThread()) {

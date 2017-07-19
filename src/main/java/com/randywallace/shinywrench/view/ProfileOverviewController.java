@@ -71,6 +71,7 @@ public class ProfileOverviewController {
 		int selectedIndex = this.profileTable.getSelectionModel().getSelectedIndex();
 		if (selectedIndex >= 0) {
 			this.profileTable.getItems().remove(selectedIndex);
+			System.out.println(this.mainApp.getSystemProfile().getProfileData().toString());
 		} else {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.initOwner(this.mainApp.getPrimaryStage());
