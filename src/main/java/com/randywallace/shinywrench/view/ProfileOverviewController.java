@@ -4,6 +4,8 @@ import com.randywallace.shinywrench.Main;
 import com.randywallace.shinywrench.model.Profile;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -62,6 +64,22 @@ public class ProfileOverviewController {
 		// Listen for selection changes and show the person details when changed.
 		this.profileTable.getSelectionModel().selectedItemProperty().addListener(
 				(observable, oldValue, newValue) -> showProfileDetails(newValue));
+	}
+
+	@FXML
+	private void handleDeleteProfile() {
+		int selectedIndex = this.profileTable.getSelectionModel().getSelectedIndex();
+		if (selectedIndex >= 0) {
+			this.profileTable.getItems().remove(selectedIndex);
+		} else {
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.initOwner(this.mainApp.getPrimaryStage());
+			alert.setTitle("No Selection");
+			alert.setHeaderText("No Profile Selected");
+			alert.setContentText("Please select a profile in the table.");
+
+			alert.showAndWait();
+		}
 	}
 
 	/**
