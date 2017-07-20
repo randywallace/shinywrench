@@ -69,7 +69,7 @@ public class SystemProfile {
 		for (Entry<String, Section> entry : this.credential_ini.entrySet()) {
 			Boolean updated = false;
 			for (Profile profile : this.profileData) {
-				System.out.println(profile.getProfile().getValue() + " " + entry.getKey());
+				//System.out.println(profile.getProfile().getValue() + " " + entry.getKey());
 				if (profile.getProfile().getValue().equals(entry.getKey())) {
 					profile.setAccess_key_id(new SimpleStringProperty(entry.getValue().get("aws_access_key_id")));
 					profile.setSecret_access_key(new SimpleStringProperty(entry.getValue().get("aws_secret_access_key")));

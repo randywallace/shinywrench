@@ -140,6 +140,7 @@ public class MainSystemTray {
 					MainSystemTray.this.primaryStage.toFront();
 				} else {
 					MainSystemTray.this.primaryStage.show();
+					MainSystemTray.this.primaryStage.toFront();
 				}
 			}
 		}));

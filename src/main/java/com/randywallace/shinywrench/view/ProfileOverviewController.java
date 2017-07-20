@@ -67,6 +67,36 @@ public class ProfileOverviewController {
 	}
 
 	@FXML
+	private void handleNewProfile() {
+		Profile tempProfile = new Profile(null, null, null, null, null, null, null, null, null, null);
+		boolean okClicked = this.mainApp.showProfileEditDialog(tempProfile);
+		if (okClicked) {
+			this.mainApp.getSystemProfile().getProfileData().add(tempProfile);
+		}
+	}
+
+	@FXML
+	private void handleEditProfile() {
+		Profile selectedProfile = this.profileTable.getSelectionModel().getSelectedItem();
+		if (selectedProfile != null) {
+			boolean okClicked = this.mainApp.showProfileEditDialog(selectedProfile);
+			if (okClicked) {
+				showProfileDetails(selectedProfile);
+			}
+
+		} else {
+			// Nothing selected.
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.initOwner(this.mainApp.getPrimaryStage());
+			alert.setTitle("No Selection");
+			alert.setHeaderText("No Profile Selected");
+			alert.setContentText("Please select a person in the table.");
+
+			alert.showAndWait();
+		}
+	}
+
+	@FXML
 	private void handleDeleteProfile() {
 		int selectedIndex = this.profileTable.getSelectionModel().getSelectedIndex();
 		if (selectedIndex >= 0) {
@@ -81,6 +111,13 @@ public class ProfileOverviewController {
 
 			alert.showAndWait();
 		}
+	}
+
+	@FXML
+	private void handleGetMfaCode() {
+		Integer mfaCode = this.mainApp.showMfaEntryDialog();
+		if (mfaCode != null)
+			System.out.println(mfaCode.toString());
 	}
 
 	/**

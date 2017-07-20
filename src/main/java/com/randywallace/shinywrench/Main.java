@@ -2,15 +2,21 @@ package com.randywallace.shinywrench;
 
 import java.io.IOException;
 
+import com.randywallace.shinywrench.model.Profile;
 import com.randywallace.shinywrench.model.SystemProfile;
+import com.randywallace.shinywrench.view.MFACodeEntryDialogController;
+import com.randywallace.shinywrench.view.ProfileEditDialogController;
 import com.randywallace.shinywrench.view.ProfileOverviewController;
 
+import it.sauronsoftware.junique.AlreadyLockedException;
+import it.sauronsoftware.junique.JUnique;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -19,6 +25,7 @@ public class Main extends Application {
 	private BorderPane rootLayout;
 	private SystemProfile systemProfile;
 	private MainSystemTray systemTray;
+	static String MSG_OPEN = "open";
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -80,6 +87,61 @@ public class Main extends Application {
 		}
 	}
 
+	public Integer showMfaEntryDialog() {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("view/MFACodeEntryDialog.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
+
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Enter MFA Code");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(this.primaryStage);
+			Scene scene = new Scene(page);
+			dialogStage.setScene(scene);
+
+			MFACodeEntryDialogController controller = loader.getController();
+			controller.setDialogStage(dialogStage);
+			dialogStage.showAndWait();
+			return controller.getMfaCode();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+
+		}
+
+	}
+
+	public boolean showProfileEditDialog(Profile profile) {
+		try {
+			// Load the fxml file and create a new stage for the popup dialog.
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("view/ProfileEditDialog.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
+
+			// Create the dialog Stage.
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Edit Profile");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(this.primaryStage);
+			Scene scene = new Scene(page);
+			dialogStage.setScene(scene);
+
+			// Set the person into the controller.
+			ProfileEditDialogController controller = loader.getController();
+			controller.setDialogStage(dialogStage);
+			controller.setPerson(profile);
+
+			// Show the dialog and wait until the user closes it
+			dialogStage.showAndWait();
+
+			return controller.isOkClicked();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	/**
 	 * Returns the main stage.
 	 * @return
@@ -89,6 +151,13 @@ public class Main extends Application {
 	}
 
 	public static void main(String[] args) {
+		String uniqueAppId = "ShinyWrench";
+		try {
+			JUnique.acquireLock(uniqueAppId);
+		} catch (AlreadyLockedException e) {
+			System.out.println(uniqueAppId + " Already running! Bailing!");
+			System.exit(1);
+		}
 		launch(args);
 	}
 
