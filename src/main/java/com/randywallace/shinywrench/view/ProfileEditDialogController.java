@@ -20,6 +20,8 @@ public class ProfileEditDialogController {
 	private TextField regionField;
 	@FXML
 	private TextField mfaSerialField;
+	@FXML
+	private TextField sourceProfileField;
 
 	private Stage dialogStage;
 	private Profile profile;
@@ -56,6 +58,7 @@ public class ProfileEditDialogController {
 		this.sessionTokenField.setText(profile.getSession_token().getValue());
 		this.regionField.setText(profile.getRegion().getValue());
 		this.mfaSerialField.setText(profile.getMfa_serial().getValue());
+		this.sourceProfileField.setText(profile.getSource_profile().getValue());
 	}
 
 	/**
@@ -79,6 +82,7 @@ public class ProfileEditDialogController {
 			this.profile.setSession_token(new SimpleStringProperty(this.sessionTokenField.getText()));
 			this.profile.setRegion(new SimpleStringProperty(this.regionField.getText()));
 			this.profile.setMfa_serial(new SimpleStringProperty(this.mfaSerialField.getText()));
+			this.profile.setSource_profile(new SimpleStringProperty(this.sourceProfileField.getText()));
 
 			this.okClicked = true;
 			this.dialogStage.close();

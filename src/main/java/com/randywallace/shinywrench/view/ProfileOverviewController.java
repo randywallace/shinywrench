@@ -90,7 +90,7 @@ public class ProfileOverviewController {
 			alert.initOwner(this.mainApp.getPrimaryStage());
 			alert.setTitle("No Selection");
 			alert.setHeaderText("No Profile Selected");
-			alert.setContentText("Please select a person in the table.");
+			alert.setContentText("Please select a profile in the table.");
 
 			alert.showAndWait();
 		}
@@ -101,7 +101,6 @@ public class ProfileOverviewController {
 		int selectedIndex = this.profileTable.getSelectionModel().getSelectedIndex();
 		if (selectedIndex >= 0) {
 			this.profileTable.getItems().remove(selectedIndex);
-			System.out.println(this.mainApp.getSystemProfile().getProfileData().toString());
 		} else {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.initOwner(this.mainApp.getPrimaryStage());
@@ -115,9 +114,21 @@ public class ProfileOverviewController {
 
 	@FXML
 	private void handleGetMfaCode() {
-		Integer mfaCode = this.mainApp.showMfaEntryDialog();
-		if (mfaCode != null)
-			System.out.println(mfaCode.toString());
+		Profile selectedProfile = this.profileTable.getSelectionModel().getSelectedItem();
+		if (selectedProfile != null) {
+			String mfaCode = this.mainApp.showMfaEntryDialog(selectedProfile, this.profileTable.getItems());
+			if (mfaCode != null)
+				System.out.println(mfaCode.toString());
+		} else {
+			// Nothing selected.
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.initOwner(this.mainApp.getPrimaryStage());
+			alert.setTitle("No Selection");
+			alert.setHeaderText("No Profile Selected");
+			alert.setContentText("Please select a profile in the table.");
+
+			alert.showAndWait();
+		}
 	}
 
 	/**

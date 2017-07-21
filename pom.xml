@@ -40,11 +40,28 @@
   		<version>0.5.2</version>
   	</dependency>
     <dependency>
-       <groupId>it.sauronsoftware</groupId>
-       <artifactId>junique</artifactId>
-       <version>1.0.4</version>
-       <scope>system</scope>
-       <systemPath>${project.basedir}/lib/junique-1.0.4.jar</systemPath>
+    	<groupId>com.amazonaws</groupId>
+    	<artifactId>aws-java-sdk-sts</artifactId>
+    </dependency>
+    <dependency>
+    	<groupId>de.huxhorn.lilith</groupId>
+    	<artifactId>de.huxhorn.lilith.3rdparty.junique</artifactId>
+    	<version>1.0.4</version>
+    </dependency>
+    <dependency>
+    	<groupId>com.fasterxml.jackson.core</groupId>
+    	<artifactId>jackson-databind</artifactId>
+    	<version>2.6.7.1</version>
+    </dependency>
+    <dependency>
+    	<groupId>com.fasterxml.jackson.dataformat</groupId>
+    	<artifactId>jackson-dataformat-cbor</artifactId>
+    	<version>2.6.7</version>
+    </dependency>
+    <dependency>
+    	<groupId>org.apache.httpcomponents</groupId>
+    	<artifactId>httpclient</artifactId>
+    	<version>4.5.2</version>
     </dependency>
   </dependencies>
   <dependencyManagement>

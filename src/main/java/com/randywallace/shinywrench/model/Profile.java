@@ -39,14 +39,6 @@ public class Profile {
 		this.mfa_serial = new SimpleStringProperty(mfa_serial);
 		this.expiration = new SimpleStringProperty(expiration);
 
-		/*this.firstName = new SimpleStringProperty(firstName);
-		this.lastName = new SimpleStringProperty(lastName);
-		
-		// Some initial dummy data, just for convenient testing.
-		this.street = new SimpleStringProperty("some street");
-		this.postalCode = new SimpleIntegerProperty(1234);
-		this.city = new SimpleStringProperty("some city");
-		this.birthday = new SimpleObjectProperty<LocalDate>(LocalDate.now()); */
 	}
 
 	public StringProperty getProfile() {

@@ -65,12 +65,13 @@
                   </ButtonBar>
                   <ButtonBar layoutX="201.0" layoutY="313.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="45.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
                     <buttons>
-                      <Button mnemonicParsing="false" text="Generate IAM MySQL Pass" />
+                        <Button mnemonicParsing="false" text="Test AWS Access" />
+                      <Button mnemonicParsing="false" text="Generate RDS Password" />
                     </buttons>
                   </ButtonBar>
                   <ButtonBar layoutX="136.0" layoutY="273.0" prefHeight="40.0" prefWidth="200.0" AnchorPane.bottomAnchor="85.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
                     <buttons>
-                      <Button mnemonicParsing="false" onAction="#handleGetMfaCode" text="Refresh Session Token with MFA" />
+                      <Button mnemonicParsing="false" onAction="#handleGetMfaCode" text="Refresh Session Token" />
                     </buttons>
                   </ButtonBar>
                </children>

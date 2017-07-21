@@ -12,6 +12,7 @@ import it.sauronsoftware.junique.AlreadyLockedException;
 import it.sauronsoftware.junique.JUnique;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -87,7 +88,7 @@ public class Main extends Application {
 		}
 	}
 
-	public Integer showMfaEntryDialog() {
+	public String showMfaEntryDialog(Profile currentProfile, ObservableList<Profile> profileList) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(Main.class.getResource("view/MFACodeEntryDialog.fxml"));
@@ -102,6 +103,8 @@ public class Main extends Application {
 
 			MFACodeEntryDialogController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
+			controller.setCurrentProfile(currentProfile);
+			controller.setAvailableProfiles(profileList);
 			dialogStage.showAndWait();
 			return controller.getMfaCode();
 		} catch (IOException e) {
