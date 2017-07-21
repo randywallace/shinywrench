@@ -132,11 +132,21 @@ public class ProfileOverviewController {
 	@FXML
 	private void handleGetMfaCode() {
 		Profile selectedProfile = this.profileTable.getSelectionModel().getSelectedItem();
-		if (selectedProfile != null) {
-			String mfaCode = this.mainApp.showMfaEntryDialog(selectedProfile, this.profileTable.getItems());
-			if (mfaCode != null) {
-				showProfileDetails(selectedProfile);
-				this.mainApp.getSystemProfile().saveConfig();
+		if (selectedProfile != null ) {
+			if (selectedProfile.getMfa_serial().getValue() != null && !selectedProfile.getMfa_serial().getValue().isEmpty()) {
+				String mfaCode = this.mainApp.showMfaEntryDialog(selectedProfile, this.profileTable.getItems());
+				if (mfaCode != null) {
+					showProfileDetails(selectedProfile);
+					this.mainApp.getSystemProfile().saveConfig();
+				}
+			} else  {
+				Alert alert = new Alert(AlertType.WARNING);
+				alert.initOwner(this.mainApp.getPrimaryStage());
+				alert.setTitle("No MFA Serial Configured");
+				alert.setHeaderText("");
+				alert.setContentText("Please edit the profile and add an MFA Serial");
+
+				alert.showAndWait();
 			}
 		} else {
 			// Nothing selected.
