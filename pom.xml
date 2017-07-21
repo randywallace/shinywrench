@@ -18,8 +18,12 @@
         <artifactId>javafx-maven-plugin</artifactId>
         <version>8.8.3</version>
         <configuration>
-          <vendor>YourCompany</vendor>
+          <vendor>Randy Wallace</vendor>
           <mainClass>com.randywallace.shinywrench.Main</mainClass>
+          <identifier>Shiny Wrench - AWS Credential Configurator</identifier>
+          <verbose>true</verbose>
+   		  <bundler>all</bundler>
+<!--     <additionalAppResources>${project.build.directory}/properties</additionalAppResources> -->
         </configuration>
       </plugin>
     </plugins>
