@@ -80,7 +80,11 @@ public class ProfileEditDialogController {
 			this.profile.setAccess_key_id(new SimpleStringProperty(this.accessKeyIdField.getText()));
 			this.profile.setSecret_access_key(new SimpleStringProperty(this.secretAccessKeyField.getText()));
 			this.profile.setSession_token(new SimpleStringProperty(this.sessionTokenField.getText()));
-			this.profile.setRegion(new SimpleStringProperty(this.regionField.getText()));
+			if ( this.regionField.getText() == null || this.regionField.getText().isEmpty()) {
+				this.profile.setRegion(new SimpleStringProperty("us-east-1"));
+			} else {
+				this.profile.setRegion(new SimpleStringProperty(this.regionField.getText()));
+			}
 			this.profile.setMfa_serial(new SimpleStringProperty(this.mfaSerialField.getText()));
 			this.profile.setSource_profile(new SimpleStringProperty(this.sourceProfileField.getText()));
 
