@@ -46,7 +46,7 @@ public class SystemProfile {
 		// System.out.println(credential_ini.get("default").toString());
 		for (Entry<String, Section> entry : this.config_ini.entrySet()) {
 			String local_region = entry.getValue().get("region");
-			if (local_region.isEmpty()) {
+			if (local_region == null || local_region.isEmpty()) {
 				local_region = "us-east-1";
 			}
 			String local_profile = entry.getKey().toString();
