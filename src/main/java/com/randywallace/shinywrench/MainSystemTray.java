@@ -29,7 +29,7 @@ public class MainSystemTray {
 	public static final URL BLACK_TRAIN = MainSystemTray.class.getResource("transport_train_station.p.000000.32.png");
 	public static final URL GREEN_TRAIN = MainSystemTray.class.getResource("transport_train_station.p.39AC39.32.png");
 
-	public static final URL SHINY_WRENCH_AWS = MainSystemTray.class.getResource("ShinyWrenchSystemTray32.png");
+	public static final URL SHINY_WRENCH_AWS = MainSystemTray.class.getResource("favicon-96x96.png");
 	// private ActionListener callbackGray;
 	private SystemTray systemTray;
 	private Stage primaryStage;
