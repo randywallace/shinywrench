@@ -26,8 +26,8 @@ public class SystemProfile {
 		switch (System.getProperty("os.name")) {
 		case "Linux":
 		case "Mac OS X":
-			this.credential_file_path = System.getenv("HOME") + "/.aws/credentials";
-			this.config_file_path = System.getenv("HOME") + "/.aws/config";
+			this.credential_file_path = System.getProperty("user.home") + "/.aws/credentials";
+			this.config_file_path = System.getProperty("user.home") + "/.aws/config";
 			break;
 		default:
 			//System.out.println(this.credential_file_path + " " + this.config_file_path);
