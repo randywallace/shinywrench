@@ -1,5 +1,7 @@
 package com.randywallace.shinywrench.view;
 
+import java.util.Optional;
+
 import com.randywallace.shinywrench.Main;
 import com.randywallace.shinywrench.aws.TestAWSAccess;
 import com.randywallace.shinywrench.model.Profile;
@@ -7,6 +9,7 @@ import com.randywallace.shinywrench.model.Profile;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -102,10 +105,19 @@ public class ProfileOverviewController {
 
 	@FXML
 	private void handleDeleteProfile() {
+		Profile selectedProfile = this.profileTable.getSelectionModel().getSelectedItem();
 		int selectedIndex = this.profileTable.getSelectionModel().getSelectedIndex();
 		if (selectedIndex >= 0) {
-			this.profileTable.getItems().remove(selectedIndex);
-			this.mainApp.getSystemProfile().saveConfig();
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.initOwner(this.mainApp.getPrimaryStage());
+			alert.setTitle("Deletion Confirmation");
+			alert.setHeaderText(null);
+			alert.setContentText("Are you sure you want to delete the " + selectedProfile.getProfile().getValue() + " profile?");
+			Optional<ButtonType> action = alert.showAndWait();
+			if (action.get() == ButtonType.OK) {
+				this.profileTable.getItems().remove(selectedIndex);
+				this.mainApp.getSystemProfile().saveConfig();
+			}
 		} else {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.initOwner(this.mainApp.getPrimaryStage());
