@@ -31,14 +31,23 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		Platform.setImplicitExit(false);
-
+		
 		this.systemProfile = new SystemProfile();
 
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Shiny Wrench - Developer AWS Credentials Configurator");
 
-		this.systemTray = new MainSystemTray(this.primaryStage, this.systemProfile);
-		this.systemTray.doSetup();
+		switch (System.getProperty("os.name")) {
+		case "Linux":
+		case "Mac OS X":
+		case "Windows 10":
+			this.systemTray = new MainSystemTray(this.primaryStage, this.systemProfile);
+			this.systemTray.doSetup();
+			break;
+		
+		default:
+			break;
+		}
 
 		initRootLayout();
 

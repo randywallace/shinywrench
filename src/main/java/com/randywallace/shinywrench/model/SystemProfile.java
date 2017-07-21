@@ -23,12 +23,15 @@ public class SystemProfile {
 	public SystemProfile() {
 		this.credential_ini = new Ini();
 		this.config_ini = new Ini();
+		System.out.println(System.getProperty("os.name"));
 		switch (System.getProperty("os.name")) {
 		case "Linux":
 		case "Mac OS X":
+		case "Windows 10":
 			this.credential_file_path = System.getProperty("user.home") + "/.aws/credentials";
 			this.config_file_path = System.getProperty("user.home") + "/.aws/config";
 			break;
+
 		default:
 			//System.out.println(this.credential_file_path + " " + this.config_file_path);
 		}
