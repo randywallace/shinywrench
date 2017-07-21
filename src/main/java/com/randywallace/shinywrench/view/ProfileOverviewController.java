@@ -1,6 +1,7 @@
 package com.randywallace.shinywrench.view;
 
 import com.randywallace.shinywrench.Main;
+import com.randywallace.shinywrench.aws.TestAWSAccess;
 import com.randywallace.shinywrench.model.Profile;
 
 import javafx.fxml.FXML;
@@ -72,7 +73,9 @@ public class ProfileOverviewController {
 		boolean okClicked = this.mainApp.showProfileEditDialog(tempProfile);
 		if (okClicked) {
 			this.mainApp.getSystemProfile().getProfileData().add(tempProfile);
+			this.mainApp.getSystemProfile().saveConfig();
 		}
+
 	}
 
 	@FXML
@@ -82,6 +85,7 @@ public class ProfileOverviewController {
 			boolean okClicked = this.mainApp.showProfileEditDialog(selectedProfile);
 			if (okClicked) {
 				showProfileDetails(selectedProfile);
+				this.mainApp.getSystemProfile().saveConfig();
 			}
 
 		} else {
@@ -101,6 +105,7 @@ public class ProfileOverviewController {
 		int selectedIndex = this.profileTable.getSelectionModel().getSelectedIndex();
 		if (selectedIndex >= 0) {
 			this.profileTable.getItems().remove(selectedIndex);
+			this.mainApp.getSystemProfile().saveConfig();
 		} else {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.initOwner(this.mainApp.getPrimaryStage());
@@ -117,10 +122,46 @@ public class ProfileOverviewController {
 		Profile selectedProfile = this.profileTable.getSelectionModel().getSelectedItem();
 		if (selectedProfile != null) {
 			String mfaCode = this.mainApp.showMfaEntryDialog(selectedProfile, this.profileTable.getItems());
-			if (mfaCode != null)
-				System.out.println(mfaCode.toString());
+			if (mfaCode != null) {
+				showProfileDetails(selectedProfile);
+				this.mainApp.getSystemProfile().saveConfig();
+			}
 		} else {
 			// Nothing selected.
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.initOwner(this.mainApp.getPrimaryStage());
+			alert.setTitle("No Selection");
+			alert.setHeaderText("No Profile Selected");
+			alert.setContentText("Please select a profile in the table.");
+
+			alert.showAndWait();
+		}
+	}
+
+	@FXML
+	private void handleTestAWSAccess() {
+		Profile selectedProfile = this.profileTable.getSelectionModel().getSelectedItem();
+		if (selectedProfile != null) {
+			TestAWSAccess tester = new TestAWSAccess(selectedProfile.getAccess_key_id().getValue(),
+					selectedProfile.getSecret_access_key().getValue(),
+					selectedProfile.getSession_token().getValue(),
+					selectedProfile.getRegion().getValue());
+			if (tester.testS3ListBuckets()) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.initOwner(this.mainApp.getPrimaryStage());
+				alert.setTitle("S3 List Bucket Test Passed");
+				alert.setHeaderText("S3 List Bucket Test Passed");
+				alert.setContentText("");
+				alert.showAndWait();
+			} else {
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.initOwner(this.mainApp.getPrimaryStage());
+				alert.setTitle("S3 List Bucket Test Failed");
+				alert.setHeaderText("S3 List Bucket Test Failed");
+				alert.setContentText("");
+				alert.showAndWait();
+			}
+		} else {
 			Alert alert = new Alert(AlertType.WARNING);
 			alert.initOwner(this.mainApp.getPrimaryStage());
 			alert.setTitle("No Selection");

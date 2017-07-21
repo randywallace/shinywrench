@@ -28,7 +28,7 @@ public class GenerateSessionCredentials {
 				.withSerialNumber(mfa_serial)
 				.withTokenCode(mfaCode);
 		this.session_credentials = this.sts_client.getSessionToken(sts_request).getCredentials();
-		System.out.println(this.session_credentials.toString());
+		//System.out.println(this.session_credentials.toString());
 		return this.session_credentials;
 	}
 }
