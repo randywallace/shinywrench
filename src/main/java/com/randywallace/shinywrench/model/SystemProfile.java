@@ -3,6 +3,10 @@ package com.randywallace.shinywrench.model;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Map.Entry;
 
 import org.ini4j.Ini;
@@ -23,18 +27,39 @@ public class SystemProfile {
 	public SystemProfile() {
 		this.credential_ini = new Ini();
 		this.config_ini = new Ini();
-		System.out.println(System.getProperty("os.name"));
-		switch (System.getProperty("os.name")) {
-		case "Linux":
-		case "Mac OS X":
-		case "Windows 10":
-			this.credential_file_path = System.getProperty("user.home") + "/.aws/credentials";
-			this.config_file_path = System.getProperty("user.home") + "/.aws/config";
-			break;
-
-		default:
-			//System.out.println(this.credential_file_path + " " + this.config_file_path);
+		this.credential_file_path = System.getProperty("user.home") + 
+				File.separator + ".aws" + File.separator + "credentials";
+		this.config_file_path = System.getProperty("user.home") + 
+				File.separator + ".aws" + File.separator + "config";
+		Path aws_config_dir = Paths.get(System.getProperty("user.home") + "/.aws");
+		try {
+			// TODO Add directory attributes
+			Files.createDirectory(aws_config_dir);
+		} catch (FileAlreadyExistsException e) {
+			System.out.println(aws_config_dir.toString() + " already exists");
+		} catch (Exception e) {
+		    e.printStackTrace();
+		    System.exit(2);
 		}
+		try {
+			// TODO Add file attributes
+			Files.createFile(Paths.get(this.config_file_path));
+		} catch (FileAlreadyExistsException e) {
+			System.out.println(this.config_file_path + " already exists");
+		} catch (Exception e) {
+		    e.printStackTrace();
+		    System.exit(2);
+		}
+		try {
+			// TODO Add file attributes
+			Files.createFile(Paths.get(this.credential_file_path));
+		} catch (FileAlreadyExistsException e) {
+			System.out.println(this.credential_file_path + " already exists");
+		} catch (Exception e) {
+		    e.printStackTrace();
+		    System.exit(2);
+		}
+
 		try {
 			this.credential_ini.load(new FileReader(this.credential_file_path));
 			this.config_ini.load(new FileReader(this.config_file_path));
@@ -42,6 +67,7 @@ public class SystemProfile {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.exit(2);
 		}
 		// System.out.println(credential_ini.get("default").toString());
 		for (Entry<String, Section> entry : this.config_ini.entrySet()) {
