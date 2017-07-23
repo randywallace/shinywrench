@@ -141,13 +141,13 @@ public class MainSystemTray {
 
 					Platform.runLater(() -> {
 						MainSystemTray.this.primaryStage.toFront();
-						});
-						
+					});
+
 				} else {
 					Platform.runLater(() -> {
 						MainSystemTray.this.primaryStage.show();
 						MainSystemTray.this.primaryStage.toFront();
-						});
+					});
 				}
 			}
 		}));
