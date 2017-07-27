@@ -10,18 +10,24 @@ import com.amazonaws.services.securitytoken.model.Credentials;
 import com.randywallace.shinywrench.aws.GenerateSessionCredentials;
 import com.randywallace.shinywrench.model.Profile;
 
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class MFACodeEntryDialogController {
+	@FXML
+	private Button okButton;
+	@FXML
+	private Button cancelButton;
 	@FXML
 	private TextField mfaCodeField;
 	@FXML
@@ -40,6 +46,15 @@ public class MFACodeEntryDialogController {
 	 */
 	@FXML
 	private void initialize() {
+	    Platform.runLater(new Runnable() {
+	        @Override
+	        public void run() {
+	        	    // Focus MFA Code entry on Stage display
+	            mfaCodeField.requestFocus();
+	            // Set OK Button so Enter can activate it on focus (instead of space)
+	            okButton.defaultButtonProperty().bind(okButton.focusedProperty());
+	        }
+	    });
 	}
 
 	public void setCurrentProfile(Profile profile) {
