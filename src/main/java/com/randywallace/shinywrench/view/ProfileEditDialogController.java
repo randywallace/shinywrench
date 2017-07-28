@@ -4,6 +4,8 @@ import com.randywallace.shinywrench.model.Profile;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -107,12 +109,11 @@ public class ProfileEditDialogController {
 	 * @return true if the input is valid
 	 */
 	private boolean isInputValid() {
-		return true;
-		//		String errorMessage = "";
-		//
-		//		if (this.firstNameField.getText() == null || this.firstNameField.getText().length() == 0) {
-		//			errorMessage += "No valid first name!\n";
-		//		}
+		String errorMessage = "";
+		
+		if (this.profileField.getText() == null || this.profileField.getText().length() == 0) {
+			errorMessage += "You must set a Profile Name!\n";
+		}
 		//		if (this.lastNameField.getText() == null || this.lastNameField.getText().length() == 0) {
 		//			errorMessage += "No valid last name!\n";
 		//		}
@@ -143,19 +144,19 @@ public class ProfileEditDialogController {
 		//			}
 		//		}
 		//
-		//		if (errorMessage.length() == 0) {
-		//			return true;
-		//		} else {
-		//			// Show the error message.
-		//			Alert alert = new Alert(AlertType.ERROR);
-		//			alert.initOwner(this.dialogStage);
-		//			alert.setTitle("Invalid Fields");
-		//			alert.setHeaderText("Please correct invalid fields");
-		//			alert.setContentText(errorMessage);
-		//
-		//			alert.showAndWait();
-		//
-		//			return false;
-		//		}
+				if (errorMessage.length() == 0) {
+					return true;
+				} else {
+					// Show the error message.
+					Alert alert = new Alert(AlertType.ERROR);
+					alert.initOwner(this.dialogStage);
+					alert.setTitle("Invalid Fields");
+					alert.setHeaderText("Please correct invalid fields");
+					alert.setContentText(errorMessage);
+		
+					alert.showAndWait();
+		
+					return false;
+				}
 	}
 }

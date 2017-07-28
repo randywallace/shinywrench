@@ -33,7 +33,7 @@
             <Label fx:id="currentProfile" text="Label" GridPane.columnIndex="1" />
             <ChoiceBox fx:id="sourceProfileChoices" prefHeight="26.0" prefWidth="187.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label text="Source Profile:" GridPane.rowIndex="1" />
-            <TextField fx:id="mfaCodeField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <TextField fx:id="mfaCodeField" onAction="#handleOk" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label text="MFA Code:" GridPane.rowIndex="2" />
          </children>
       </GridPane>

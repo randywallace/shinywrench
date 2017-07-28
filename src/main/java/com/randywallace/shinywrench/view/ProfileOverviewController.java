@@ -12,6 +12,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.SortType;
 import javafx.scene.control.TableView;
 
 public class ProfileOverviewController {
@@ -77,9 +78,11 @@ public class ProfileOverviewController {
 		if (okClicked) {
 			this.mainApp.getSystemProfile().getProfileData().add(tempProfile);
 			this.mainApp.getSystemProfile().saveConfig();
+			this.profileTable.sort();
 		}
 
 	}
+
 
 	@FXML
 	private void handleEditProfile() {
@@ -89,6 +92,7 @@ public class ProfileOverviewController {
 			if (okClicked) {
 				showProfileDetails(selectedProfile);
 				this.mainApp.getSystemProfile().saveConfig();
+				this.profileTable.refresh();
 			}
 
 		} else {
@@ -108,6 +112,7 @@ public class ProfileOverviewController {
 			if (action.get() == ButtonType.OK) {
 				this.profileTable.getItems().remove(selectedIndex);
 				this.mainApp.getSystemProfile().saveConfig();
+				this.profileTable.sort();
 			}
 		} else {
 			displayAlert(AlertType.WARNING, "No Selection", "No Profile Selected", "Please select a profile in the table.");
@@ -174,6 +179,10 @@ public class ProfileOverviewController {
 
 		// Add observable list data to the table
 		this.profileTable.setItems(mainApp.getSystemProfile().getProfileData());
+		this.profileColumn.setSortType(SortType.ASCENDING);
+		this.profileColumn.setSortable(true);
+		this.profileTable.getSortOrder().add(this.profileColumn);
+		this.profileTable.sort();
 	}
 
 	private void showProfileDetails(Profile profile) {
@@ -184,12 +193,14 @@ public class ProfileOverviewController {
 			this.mfaSerialLabel.setText(profile.getMfa_serial().getValue());
 			this.sessionTokenLabel.setText(profile.getSession_token().getValue());
 			this.regionLabel.setText(profile.getRegion().getValue());
+			this.expirationLabel.setText(profile.getExpiration().getValue());
 		} else {
 			this.profileLabel.setText("");
 			this.accessKeyIdLabel.setText("");
 			this.mfaSerialLabel.setText("");
 			this.sessionTokenLabel.setText("");
 			this.regionLabel.setText("");
+			this.expirationLabel.setText("");
 
 		}
 	}

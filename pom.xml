@@ -2,7 +2,10 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.randywallace.shinywrench</groupId>
   <artifactId>shinywrench</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.1</version>
+  <properties>
+     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
   <build>
     <plugins>
       <plugin>
@@ -20,56 +23,78 @@
         <configuration>
           <vendor>Randy Wallace</vendor>
           <mainClass>com.randywallace.shinywrench.Main</mainClass>
+          <appName>Shiny Wrench - AWS Credential Configurator</appName>
           <identifier>Shiny Wrench - AWS Credential Configurator</identifier>
           <verbose>true</verbose>
-   		  <bundler>all</bundler>
+          <bundler>all</bundler>
+          <needShortcut>true</needShortcut>
+          <bundleArguments>
+            <runtime />
+          </bundleArguments>
 <!--     <additionalAppResources>${project.build.directory}/properties</additionalAppResources> -->
         </configuration>
+        <executions>
+          <execution>
+            <!-- required before build-native -->
+            <id>create-jfxjar</id>
+            <phase>package</phase>
+            <goals>
+              <goal>build-jar</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>create-native</id>
+            <phase>package</phase>
+            <goals>
+              <goal>build-native</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
   <dependencies>
-  	<dependency>
-  		<groupId>com.dorkbox</groupId>
-  		<artifactId>SystemTray</artifactId>
-  		<version>3.1</version>
-  	</dependency>
-  	<dependency>
+    <dependency>
+      <groupId>com.dorkbox</groupId>
+      <artifactId>SystemTray</artifactId>
+      <version>3.1</version>
+    </dependency>
+    <dependency>
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-java-sdk-core</artifactId>
   </dependency>
-  	<dependency>
-  		<groupId>org.ini4j</groupId>
-  		<artifactId>ini4j</artifactId>
-  		<version>0.5.2</version>
-  	</dependency>
     <dependency>
-    	<groupId>com.amazonaws</groupId>
-    	<artifactId>aws-java-sdk-sts</artifactId>
+      <groupId>org.ini4j</groupId>
+      <artifactId>ini4j</artifactId>
+      <version>0.5.2</version>
     </dependency>
     <dependency>
-    	<groupId>de.huxhorn.lilith</groupId>
-    	<artifactId>de.huxhorn.lilith.3rdparty.junique</artifactId>
-    	<version>1.0.4</version>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk-sts</artifactId>
     </dependency>
     <dependency>
-    	<groupId>com.fasterxml.jackson.core</groupId>
-    	<artifactId>jackson-databind</artifactId>
-    	<version>2.6.7.1</version>
+      <groupId>de.huxhorn.lilith</groupId>
+      <artifactId>de.huxhorn.lilith.3rdparty.junique</artifactId>
+      <version>1.0.4</version>
     </dependency>
     <dependency>
-    	<groupId>com.fasterxml.jackson.dataformat</groupId>
-    	<artifactId>jackson-dataformat-cbor</artifactId>
-    	<version>2.6.7</version>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.6.7.1</version>
     </dependency>
     <dependency>
-    	<groupId>org.apache.httpcomponents</groupId>
-    	<artifactId>httpclient</artifactId>
-    	<version>4.5.2</version>
+      <groupId>com.fasterxml.jackson.dataformat</groupId>
+      <artifactId>jackson-dataformat-cbor</artifactId>
+      <version>2.6.7</version>
     </dependency>
     <dependency>
-    	<groupId>com.amazonaws</groupId>
-    	<artifactId>aws-java-sdk-s3</artifactId>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.5.2</version>
+    </dependency>
+    <dependency>
+      <groupId>com.amazonaws</groupId>
+      <artifactId>aws-java-sdk-s3</artifactId>
     </dependency>
   </dependencies>
   <dependencyManagement>
