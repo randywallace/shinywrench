@@ -1,0 +1,7 @@
+version: {build}
+image: Visual Studio 2017
+build:
+  verbosity: normal
+build_script: mvn clean package
+cache:
+  - C:\Users\appveyor\.m2
