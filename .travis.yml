@@ -1,6 +1,4 @@
 language: java
-jdk:
-  - oraclejdk8
 cache:
   directories:
     - $HOME/.m2/
@@ -9,8 +7,12 @@ addons:
   apt:
     packages:
       - oracle-java8-installer
-os:
-  - linux
-  - osx
+      - fakeroot
+matrix:
+  include:
+    - os: linux
+      jdk: oraclejdk8
+    - os: osx
+      osx_image: xcode8
 script:
   - mvn clean package
