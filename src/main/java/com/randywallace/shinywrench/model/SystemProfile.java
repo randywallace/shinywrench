@@ -75,7 +75,7 @@ public class SystemProfile {
 			if (local_region == null || local_region.isEmpty()) {
 				local_region = "us-east-1";
 			}
-			String local_profile = entry.getKey().toString();
+			String local_profile = entry.getKey();
 			String[] local_profile_split = local_profile.split(" ");
 			if (local_profile_split.length == 2) {
 				local_profile = local_profile_split[1];
@@ -109,7 +109,7 @@ public class SystemProfile {
 			if (!updated) {
 				this.profileData.add(
 						new Profile(
-								entry.getKey().toString(),
+								entry.getKey(),
 								entry.getValue().get("aws_access_key_id"),
 								entry.getValue().get("aws_secret_access_key"),
 								"us-east-1",

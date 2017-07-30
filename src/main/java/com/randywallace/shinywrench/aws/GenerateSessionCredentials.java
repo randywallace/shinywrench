@@ -11,7 +11,6 @@ import com.amazonaws.services.securitytoken.model.GetSessionTokenRequest;
 
 public class GenerateSessionCredentials {
 
-	private Credentials session_credentials;
 	private AWSSecurityTokenService sts_client;
 
 	public GenerateSessionCredentials(String aws_access_key_id, String aws_secret_access_key, String region) {
@@ -27,8 +26,9 @@ public class GenerateSessionCredentials {
 				.withDurationSeconds(60 * 60 * 8)
 				.withSerialNumber(mfa_serial)
 				.withTokenCode(mfaCode);
-		this.session_credentials = this.sts_client.getSessionToken(sts_request).getCredentials();
+		Credentials session_credentials;
+		session_credentials = this.sts_client.getSessionToken(sts_request).getCredentials();
 		//System.out.println(this.session_credentials.toString());
-		return this.session_credentials;
+		return session_credentials;
 	}
 }

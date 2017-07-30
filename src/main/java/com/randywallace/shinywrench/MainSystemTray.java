@@ -16,20 +16,7 @@ import javafx.stage.Stage;
 
 public class MainSystemTray {
 
-	public static final URL LT_GRAY_TRAIN = MainSystemTray.class.getResource("transport_train_station.p.666666.32.png");
-	public static final URL BLUE_CAMPING = MainSystemTray.class.getResource("accommodation_camping.glow.0092DA.32.png");
-	public static final URL BLACK_FIRE = MainSystemTray.class.getResource("amenity_firestation.p.000000.32.png");
-
-	public static final URL BLACK_MAIL = MainSystemTray.class.getResource("amenity_post_box.p.000000.32.png");
-	public static final URL GREEN_MAIL = MainSystemTray.class.getResource("amenity_post_box.p.39AC39.32.png");
-
-	public static final URL BLACK_BUS = MainSystemTray.class.getResource("transport_bus_station.p.000000.32.png");
-	public static final URL LT_GRAY_BUS = MainSystemTray.class.getResource("transport_bus_station.p.999999.32.png");
-
-	public static final URL BLACK_TRAIN = MainSystemTray.class.getResource("transport_train_station.p.000000.32.png");
-	public static final URL GREEN_TRAIN = MainSystemTray.class.getResource("transport_train_station.p.39AC39.32.png");
-
-	public static final URL SHINY_WRENCH_AWS = MainSystemTray.class.getResource("favicon-96x96.png");
+	private static final URL SHINY_WRENCH_AWS = MainSystemTray.class.getResource("favicon-96x96.png");
 	// private ActionListener callbackGray;
 	private SystemTray systemTray;
 	private Stage primaryStage;

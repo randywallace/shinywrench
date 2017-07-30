@@ -59,7 +59,7 @@ public class Main extends Application {
 	/**
 	 * Initializes the root layout.
 	 */
-	public void initRootLayout() {
+	private void initRootLayout() {
 		try {
 			// Load root layout from fxml file.
 			FXMLLoader loader = new FXMLLoader();
@@ -83,7 +83,7 @@ public class Main extends Application {
 	/**
 	 * Shows the profile overview inside the root layout.
 	 */
-	public void showProfileOverview() {
+	private void showProfileOverview() {
 		try {
 			// Load person overview.
 			FXMLLoader loader = new FXMLLoader();
@@ -134,7 +134,7 @@ public class Main extends Application {
 			// Load the fxml file and create a new stage for the popup dialog.
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(Main.class.getResource("view/ProfileEditDialog.fxml"));
-			AnchorPane page = (AnchorPane) loader.load();
+			AnchorPane page = loader.load();
 
 			// Create the dialog Stage.
 			Stage dialogStage = new Stage();

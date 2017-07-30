@@ -38,7 +38,7 @@ public class MFACodeEntryDialogController {
 	private Stage dialogStage;
 	private String mfaCode;
 	private Credentials sessionCredentials;
-	ObservableList<Profile> profileList;
+	private ObservableList<Profile> profileList;
 
 	/**
 	 * Initializes the controller class. This method is automatically called
