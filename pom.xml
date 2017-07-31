@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.randywallace.shinywrench</groupId>
   <artifactId>shinywrench</artifactId>
-  <version>0.1</version>
+  <version>0.0.1</version>
   <properties>
      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -28,9 +28,7 @@
           <verbose>true</verbose>
           <bundler>all</bundler>
           <needShortcut>true</needShortcut>
-          <bundleArguments>
-            <runtime />
-          </bundleArguments>
+          <nativeReleaseVersion>${project.version}</nativeReleaseVersion>
 <!--     <additionalAppResources>${project.build.directory}/properties</additionalAppResources> -->
         </configuration>
         <executions>
@@ -48,6 +46,21 @@
             <goals>
               <goal>build-native</goal>
             </goals>
+            <configuration>
+              <bundleArguments>
+                <runtime />
+              </bundleArguments>
+            </configuration>
+          </execution>
+          <execution>
+            <id>create-native-withjre</id>
+            <phase>package</phase>
+            <goals>
+              <goal>build-native</goal>
+            </goals>
+            <configuration>
+              <nativeOutputDir>${project.build.directory}/jfx/native-withjre</nativeOutputDir>
+            </configuration>
           </execution>
         </executions>
       </plugin>

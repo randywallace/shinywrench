@@ -1,20 +1,49 @@
 language: java
 cache:
   directories:
-    - $HOME/.m2/
+  - "$HOME/.m2/"
 sudo: false
 addons:
   apt:
     packages:
-      - oracle-java8-installer
-      - fakeroot
-      - rpm
+    - oracle-java8-installer
+    - fakeroot
+    - rpm
 matrix:
   include:
-    - os: linux
-      jdk: oraclejdk8
-    - os: osx
-      osx_image: xcode9
+  - os: linux
+    jdk: oraclejdk8
+  - os: osx
+    osx_image: xcode9
 install: true
 script:
-  - mvn clean package
+- mvn clean package
+- rm -rf "target/jfx/native/Shiny\ Wrench\ -\ AWS\ Credential\ Configurator"
+- rm -rf "target/jfx/native-withjre/Shiny\ Wrench\ -\ AWS\ Credential\ Configurator"
+deploy:
+  - provider: s3
+    access_key_id: AKIAJLROHHTSAS4CPL5A
+    secret_access_key:
+      secure: qZSHo5A5RDjvotxycCYXQm9cdj9N+NNYufbvG/FoKENad5nfIemJsCBV0JGkjs+/Q3zqwOdNRTKQESd9p6WND+lnjqYx3nFv9FJeSFPzV07pMSStWNaizc8l8inwKNXR6bIoQcmgHFr1K0TATkroipuQuZqZtRRsfRV93HKPO4z42qt7wfcJ31jMeNJDWHH8QvT58NNrxElN6cGZqUUEhm9LlEdW6V+p754kmqLBXZG1xYTRQYdIJzRdi0p0Jj7Dsd8wIyAPpBCUiA2l6KiIVP0/oI8tkWeotBwCaqaLBoZJ9YVIC1NBFXcgzpgCyTKDDJQ4yuQS3I2VfqUMkVl8/BUi6g03LKjbPLbU5zlskiFbVWmfQEuaNH7Qwd70bYlo0KbkeIvo2soivtO9P+KzXA4opqwM/7ViROXB1VxvkCUzcluBAuHKjmDRF304K3dTak0Sv7Ah+ZuaLYCOYOwdQTlC6N89npmkhafhrOku3xCLXfu66KnPSpmeK5wf7Oxcwe2nIDougB/aYxukZj2SqBUjL3Mle7QRjVshFYClVh1jia7UpthTQ0tlanZiZRu0OOQ5TXB8doJuffa6l/OsXsgI9r/9LhKZNqYe75lT0W5SijLWaW0G3IbwmrY1HHYj0P4ArB1ZJID4oqylhyFJwlyCRkDiMGXrNRXFmS6u/LM=
+    bucket: shinywrench-releases-public
+    acl: public_read
+    skip_cleanup: true
+    region: us-east-1
+    local_dir: target/jfx/native
+    upload_dir: $TRAVIS_TAG
+    on:
+      repo: randywallace/shinywrench
+      tags: true
+  - provider: s3
+    access_key_id: AKIAJLROHHTSAS4CPL5A
+    secret_access_key:
+      secure: qZSHo5A5RDjvotxycCYXQm9cdj9N+NNYufbvG/FoKENad5nfIemJsCBV0JGkjs+/Q3zqwOdNRTKQESd9p6WND+lnjqYx3nFv9FJeSFPzV07pMSStWNaizc8l8inwKNXR6bIoQcmgHFr1K0TATkroipuQuZqZtRRsfRV93HKPO4z42qt7wfcJ31jMeNJDWHH8QvT58NNrxElN6cGZqUUEhm9LlEdW6V+p754kmqLBXZG1xYTRQYdIJzRdi0p0Jj7Dsd8wIyAPpBCUiA2l6KiIVP0/oI8tkWeotBwCaqaLBoZJ9YVIC1NBFXcgzpgCyTKDDJQ4yuQS3I2VfqUMkVl8/BUi6g03LKjbPLbU5zlskiFbVWmfQEuaNH7Qwd70bYlo0KbkeIvo2soivtO9P+KzXA4opqwM/7ViROXB1VxvkCUzcluBAuHKjmDRF304K3dTak0Sv7Ah+ZuaLYCOYOwdQTlC6N89npmkhafhrOku3xCLXfu66KnPSpmeK5wf7Oxcwe2nIDougB/aYxukZj2SqBUjL3Mle7QRjVshFYClVh1jia7UpthTQ0tlanZiZRu0OOQ5TXB8doJuffa6l/OsXsgI9r/9LhKZNqYe75lT0W5SijLWaW0G3IbwmrY1HHYj0P4ArB1ZJID4oqylhyFJwlyCRkDiMGXrNRXFmS6u/LM=
+    bucket: shinywrench-releases-public
+    acl: public_read
+    skip_cleanup: true
+    region: us-east-1
+    local_dir: target/jfx/native-withjre
+    upload_dir: $TRAVIS_TAG
+    on:
+      repo: randywallace/shinywrench
+      tags: true

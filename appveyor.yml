@@ -8,3 +8,5 @@ cache:
 artifacts:
   - path: 'target\jfx\native\*.exe'
     name: 'ShinyWrenchEXE'
+  - path: 'target\jfx\native-withjre\*.exe'
+    name: 'ShinyWrenchEXE-WithJRE'
