@@ -22,8 +22,8 @@ script:
 - rm -rf "target/jfx/native/ShinyWrench-AWSCredentialConfigurator/"
 - rm -rf "target/jfx/native/Shiny Wrench - AWS Credential Configurator.app/"
 - rm -rf "target/jfx/native-withjre/Shiny\ Wrench\ -\ AWS\ Credential\ Configurator/"
-- rm -rf "target/jfx/native-withjre/ShinyWrench-AWSCredentialConfigurator/"
-- rm -rf "target/jfx/native-withjre/Shiny Wrench - AWS Credential Configurator.app/"
+- rm -rf "target/jfx/native-withjre/ShinyWrench-AWSCredentialConfigurator-WithFullJRE/"
+- rm -rf "target/jfx/native-withjre/Shiny Wrench - AWS Credential Configurator - With Full JRE.app/"
 deploy:
   - provider: s3
     access_key_id: AKIAJLROHHTSAS4CPL5A

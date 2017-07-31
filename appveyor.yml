@@ -10,3 +10,18 @@ artifacts:
     name: 'ShinyWrenchEXE'
   - path: 'target\jfx\native-withjre\*.exe'
     name: 'ShinyWrenchEXE-WithJRE'
+deploy:
+  - provider: Environment
+    name: tagged-build
+    on:
+      appveyor_repo_tag: true
+  - provider: S3
+    access_key_id: AKIAJLROHHTSAS4CPL5A
+    secret_access_key:
+      secure: 1qUNz8dshc7Alfkhp4MlTMQcDFUUvn0Y1BrjAeIuTasHovalK0sa72GeDSuPqUyk
+    bucket: shinywrench-releases-public
+    region: us-east-1
+    set_public: true
+    folder: $(appveyor_repo_tag)
+    artifact: "ShinyWrenchEXE,ShinyWrenchEXE-WithJRE"
+
