@@ -2,14 +2,15 @@ version: "1.0.{build}"
 image: Visual Studio 2017
 build:
   verbosity: normal
-build_script: mvn clean package
+build_script:
+  - mvn clean package
+  - ps: Move-Item -Path "target\jfx\native\*.exe"
+  - ps: Move-Item -Path "target\jfx\native-withjre\*.exe"
 cache:
   - C:\Users\appveyor\.m2
 artifacts:
-  - path: 'target\jfx\native\*.exe'
+  - path: '*.exe'
     name: 'ShinyWrenchEXE'
-  - path: 'target\jfx\native-withjre\*.exe'
-    name: 'ShinyWrenchEXE-WithJRE'
 deploy:
   - provider: Environment
     name: production
@@ -22,6 +23,5 @@ deploy:
     bucket: shinywrench-releases-public
     region: us-east-1
     set_public: true
-    folder: $(appveyor_repo_tag)
-    artifact: "ShinyWrenchEXE,ShinyWrenchEXE-WithJRE"
-
+    folder: $APPVEYOR_REPO_TAG_NAME
+    artifact: "ShinyWrenchEXE"
