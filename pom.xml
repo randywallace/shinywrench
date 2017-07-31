@@ -23,8 +23,6 @@
         <configuration>
           <vendor>Randy Wallace</vendor>
           <mainClass>com.randywallace.shinywrench.Main</mainClass>
-          <appName>Shiny Wrench - AWS Credential Configurator</appName>
-          <identifier>Shiny Wrench - AWS Credential Configurator</identifier>
           <verbose>true</verbose>
           <bundler>all</bundler>
           <needShortcut>true</needShortcut>
@@ -47,6 +45,8 @@
               <goal>build-native</goal>
             </goals>
             <configuration>
+              <appName>Shiny Wrench - AWS Credential Configurator</appName>
+              <identifier>Shiny Wrench - AWS Credential Configurator</identifier>
               <bundleArguments>
                 <runtime />
               </bundleArguments>
@@ -59,6 +59,8 @@
               <goal>build-native</goal>
             </goals>
             <configuration>
+              <appName>Shiny Wrench - AWS Credential Configurator - With Full JRE</appName>
+              <identifier>Shiny Wrench - AWS Credential Configurator - With Full JRE</identifier>
               <nativeOutputDir>${project.build.directory}/jfx/native-withjre</nativeOutputDir>
             </configuration>
           </execution>

@@ -18,8 +18,12 @@ matrix:
 install: true
 script:
 - mvn clean package
-- rm -rf "target/jfx/native/Shiny\ Wrench\ -\ AWS\ Credential\ Configurator"
-- rm -rf "target/jfx/native-withjre/Shiny\ Wrench\ -\ AWS\ Credential\ Configurator"
+- rm -rf "target/jfx/native/Shiny\ Wrench\ -\ AWS\ Credential\ Configurator/"
+- rm -rf "target/jfx/native/ShinyWrench-AWSCredentialConfigurator/"
+- rm -rf "target/jfx/native/Shiny Wrench - AWS Credential Configurator.app/"
+- rm -rf "target/jfx/native-withjre/Shiny\ Wrench\ -\ AWS\ Credential\ Configurator/"
+- rm -rf "target/jfx/native-withjre/ShinyWrench-AWSCredentialConfigurator/"
+- rm -rf "target/jfx/native-withjre/Shiny Wrench - AWS Credential Configurator.app/"
 deploy:
   - provider: s3
     access_key_id: AKIAJLROHHTSAS4CPL5A
@@ -34,6 +38,7 @@ deploy:
     on:
       repo: randywallace/shinywrench
       tags: true
+      all_branches: true
   - provider: s3
     access_key_id: AKIAJLROHHTSAS4CPL5A
     secret_access_key:
@@ -47,3 +52,4 @@ deploy:
     on:
       repo: randywallace/shinywrench
       tags: true
+      all_branches: true
