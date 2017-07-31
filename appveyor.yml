@@ -23,5 +23,5 @@ deploy:
     bucket: shinywrench-releases-public
     region: us-east-1
     set_public: true
-    folder: $APPVEYOR_REPO_TAG_NAME
+    folder: $(APPVEYOR_REPO_TAG_NAME)
     artifact: "ShinyWrenchEXE"
