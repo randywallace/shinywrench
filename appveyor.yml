@@ -12,7 +12,7 @@ artifacts:
     name: 'ShinyWrenchEXE-WithJRE'
 deploy:
   - provider: Environment
-    name: tagged-build
+    name: production
     on:
       appveyor_repo_tag: true
   - provider: S3
