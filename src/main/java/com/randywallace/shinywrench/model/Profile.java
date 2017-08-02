@@ -2,8 +2,12 @@ package com.randywallace.shinywrench.model;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Profile {
+
+	private static Logger LOG = LoggerFactory.getLogger(Profile.class);
 
 	private StringProperty profile;
 	private StringProperty access_key_id;

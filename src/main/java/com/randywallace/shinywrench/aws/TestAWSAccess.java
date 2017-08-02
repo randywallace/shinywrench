@@ -9,8 +9,12 @@ import com.amazonaws.auth.BasicSessionCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.Bucket;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TestAWSAccess {
+
+	private static Logger LOG = LoggerFactory.getLogger(TestAWSAccess.class);
 
 	private AWSCredentials request_credentials;
 	private String region;
@@ -32,9 +36,10 @@ public class TestAWSAccess {
 		try {
 			List<Bucket> response = s3_client.listBuckets();
 			System.out.println(response.size());
+			LOG.info("Found " + response.size() + " Buckets");
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error(e.getMessage());
 			return false;
 		}
 	}

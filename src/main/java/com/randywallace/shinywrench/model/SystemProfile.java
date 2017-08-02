@@ -15,9 +15,12 @@ import org.ini4j.Profile.Section;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SystemProfile {
 
+	private static Logger LOG = LoggerFactory.getLogger(SystemProfile.class);
 	private String credential_file_path;
 	private String config_file_path;
 	private ObservableList<Profile> profileData = FXCollections.observableArrayList();
@@ -36,27 +39,27 @@ public class SystemProfile {
 			// TODO Add directory attributes
 			Files.createDirectory(aws_config_dir);
 		} catch (FileAlreadyExistsException e) {
-			System.out.println(aws_config_dir.toString() + " already exists");
+			LOG.info(aws_config_dir.toString() + " already exists");
 		} catch (Exception e) {
-		    e.printStackTrace();
+		    LOG.error(e.getMessage(), e);
 		    System.exit(2);
 		}
 		try {
 			// TODO Add file attributes
 			Files.createFile(Paths.get(this.config_file_path));
 		} catch (FileAlreadyExistsException e) {
-			System.out.println(this.config_file_path + " already exists");
+			LOG.info(this.config_file_path + " already exists");
 		} catch (Exception e) {
-		    e.printStackTrace();
+			LOG.error(e.getMessage(), e);
 		    System.exit(2);
 		}
 		try {
 			// TODO Add file attributes
 			Files.createFile(Paths.get(this.credential_file_path));
 		} catch (FileAlreadyExistsException e) {
-			System.out.println(this.credential_file_path + " already exists");
+			LOG.info(this.credential_file_path + " already exists");
 		} catch (Exception e) {
-		    e.printStackTrace();
+			LOG.error(e.getMessage(), e);
 		    System.exit(2);
 		}
 
@@ -66,10 +69,10 @@ public class SystemProfile {
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error(e.getMessage(), e);
 			System.exit(2);
 		}
-		// System.out.println(credential_ini.get("default").toString());
+		LOG.debug(credential_ini.get("default").toString());
 		for (Entry<String, Section> entry : this.config_ini.entrySet()) {
 			String local_region = entry.getValue().get("region");
 			if (local_region == null || local_region.isEmpty()) {
@@ -98,7 +101,7 @@ public class SystemProfile {
 		for (Entry<String, Section> entry : this.credential_ini.entrySet()) {
 			Boolean updated = false;
 			for (Profile profile : this.profileData) {
-				//System.out.println(profile.getProfile().getValue() + " " + entry.getKey());
+				LOG.debug(profile.getProfile().getValue() + " " + entry.getKey());
 				if (profile.getProfile().getValue().equals(entry.getKey())) {
 					profile.setAccess_key_id(new SimpleStringProperty(entry.getValue().get("aws_access_key_id")));
 					profile.setSecret_access_key(new SimpleStringProperty(entry.getValue().get("aws_secret_access_key")));
@@ -122,8 +125,7 @@ public class SystemProfile {
 			}
 		}
 
-		//System.out.println(this.profileData.toString());
-
+		LOG.debug(this.profileData.toString());
 	}
 
 	public ObservableList<Profile> getProfileData() {
@@ -159,7 +161,7 @@ public class SystemProfile {
 				this.credential_ini.store(new File(this.credential_file_path));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				LOG.error(e.getMessage(), e);
 			}
 			if (!profile_name.equals("default")) {
 				profile_name = "profile " + profile_name;
@@ -173,7 +175,7 @@ public class SystemProfile {
 			try {
 				this.config_ini.store(new File(this.config_file_path));
 			} catch (IOException e) {
-				e.printStackTrace();
+				LOG.error(e.getMessage(), e);
 			}
 
 		}

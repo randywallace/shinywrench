@@ -14,8 +14,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.SortType;
 import javafx.scene.control.TableView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ProfileOverviewController {
+
+	private static Logger LOG = LoggerFactory.getLogger(ProfileOverviewController.class);
 
 	@FXML
 	private TableView<Profile> profileTable;

@@ -2,12 +2,10 @@ package com.randywallace.shinywrench;
 
 import java.io.IOException;
 
+import com.randywallace.shinywrench.logback.JavaFXTextAreaAppender;
 import com.randywallace.shinywrench.model.Profile;
 import com.randywallace.shinywrench.model.SystemProfile;
-import com.randywallace.shinywrench.view.MFACodeEntryDialogController;
-import com.randywallace.shinywrench.view.ProfileEditDialogController;
-import com.randywallace.shinywrench.view.ProfileOverviewController;
-import com.randywallace.shinywrench.view.RootController;
+import com.randywallace.shinywrench.view.*;
 
 import it.sauronsoftware.junique.AlreadyLockedException;
 import it.sauronsoftware.junique.JUnique;
@@ -20,8 +18,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class Main extends Application {
+
+	private static Logger LOG = LoggerFactory.getLogger(Main.class);
 
 	private Stage primaryStage;
 	private BorderPane rootLayout;
@@ -31,12 +34,15 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
+
 		Platform.setImplicitExit(false);
 		
 		this.systemProfile = new SystemProfile();
 
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Shiny Wrench - Developer AWS Credentials Configurator");
+
+		LOG.info("Starting up ShinyWrench");
 
 		switch (System.getProperty("os.name")) {
 		case "Linux":
@@ -76,7 +82,25 @@ public class Main extends Application {
 			this.primaryStage.setScene(scene);
 			this.primaryStage.show();
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOG.error(e.getMessage(), e);
+		}
+	}
+
+	public void showLog() {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(Main.class.getResource("view/Log.fxml"));
+			AnchorPane logView = loader.load();
+
+			Stage logStage = new Stage();
+			Scene scene = new Scene(logView);
+			logStage.setScene(scene);
+			LogController logController = loader.getController();
+			logController.setTextArea(JavaFXTextAreaAppender.getLogtextArea());
+			logStage.show();
+
+		} catch (IOException e) {
+		    LOG.error(e.getMessage(), e);
 		}
 	}
 
@@ -98,7 +122,7 @@ public class Main extends Application {
 			controller.setMainApp(this);
 
 		} catch (IOException e) {
-			e.printStackTrace();
+		    LOG.error(e.getMessage(), e);
 		}
 	}
 
@@ -122,7 +146,7 @@ public class Main extends Application {
 			dialogStage.showAndWait();
 			return controller.getMfaCode();
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOG.error(e.getMessage(), e);
 			return null;
 
 		}
@@ -154,7 +178,7 @@ public class Main extends Application {
 
 			return controller.isOkClicked();
 		} catch (IOException e) {
-			e.printStackTrace();
+		    LOG.error(e.getMessage(), e);
 			return false;
 		}
 	}
@@ -172,7 +196,7 @@ public class Main extends Application {
 		try {
 			JUnique.acquireLock(uniqueAppId);
 		} catch (AlreadyLockedException e) {
-			System.out.println(uniqueAppId + " Already running! Bailing!");
+			LOG.error(uniqueAppId + " Already running! Bailing!");
 			System.exit(1);
 		}
 		launch(args);
@@ -181,4 +205,5 @@ public class Main extends Application {
 	public SystemProfile getSystemProfile() {
 		return this.systemProfile;
 	}
+
 }

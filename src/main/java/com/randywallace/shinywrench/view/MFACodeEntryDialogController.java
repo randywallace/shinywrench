@@ -22,8 +22,12 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MFACodeEntryDialogController {
+
+	private static Logger LOG = LoggerFactory.getLogger(MFACodeEntryDialogController.class);
 	@FXML
 	private Button okButton;
 	@FXML
@@ -111,7 +115,7 @@ public class MFACodeEntryDialogController {
 					secret_access_key = entry.getSecret_access_key().getValue();
 					region = this.profile.getRegion().getValue();
 					mfa_serial = this.profile.getMfa_serial().getValue();
-					System.out.println(source_profile_selection.getValue() + " " + access_key_id + " " + secret_access_key + " " + region + " " + mfa_serial + " " + this.mfaCode);
+					LOG.debug(source_profile_selection.getValue() + " " + access_key_id + " " + secret_access_key + " " + region + " " + mfa_serial + " " + this.mfaCode);
 					try {
 						this.sessionCredentials = new GenerateSessionCredentials(access_key_id, secret_access_key, region)
 								.getMFACredentials(mfa_serial, this.mfaCode);
@@ -123,7 +127,7 @@ public class MFACodeEntryDialogController {
 						String expiration = DateTimeFormatter.ISO_DATE_TIME.format(expiration_datetime);
 						this.profile.setExpiration(new SimpleStringProperty(expiration));
 					} catch (AWSSecurityTokenServiceException e) {
-						e.printStackTrace();
+					    LOG.error(e.getMessage());
 						Alert alert = new Alert(AlertType.ERROR);
 						alert.initOwner(this.dialogStage);
 						alert.setTitle("Invalid Fields");

@@ -13,9 +13,13 @@ import dorkbox.systemTray.util.JavaFX;
 import dorkbox.util.CacheUtil;
 import javafx.application.Platform;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MainSystemTray {
 
+
+	private static Logger LOG = LoggerFactory.getLogger(MainSystemTray.class);
 	private static final URL SHINY_WRENCH_AWS = MainSystemTray.class.getResource("favicon-96x96.png");
 	// private ActionListener callbackGray;
 	private SystemTray systemTray;

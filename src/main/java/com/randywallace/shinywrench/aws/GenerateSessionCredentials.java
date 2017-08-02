@@ -8,8 +8,11 @@ import com.amazonaws.services.securitytoken.AWSSecurityTokenServiceClientBuilder
 import com.amazonaws.services.securitytoken.model.AWSSecurityTokenServiceException;
 import com.amazonaws.services.securitytoken.model.Credentials;
 import com.amazonaws.services.securitytoken.model.GetSessionTokenRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GenerateSessionCredentials {
+	private static Logger LOG = LoggerFactory.getLogger(GenerateSessionCredentials.class);
 
 	private AWSSecurityTokenService sts_client;
 
@@ -28,7 +31,7 @@ public class GenerateSessionCredentials {
 				.withTokenCode(mfaCode);
 		Credentials session_credentials;
 		session_credentials = this.sts_client.getSessionToken(sts_request).getCredentials();
-		//System.out.println(this.session_credentials.toString());
+		LOG.info("Successfully Generated Session Credentials with " + mfa_serial);
 		return session_credentials;
 	}
 }

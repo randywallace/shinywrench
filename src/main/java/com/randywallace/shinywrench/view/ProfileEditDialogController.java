@@ -8,8 +8,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ProfileEditDialogController {
+
+	private static Logger LOG = LoggerFactory.getLogger(ProfileEditDialogController.class);
 	@FXML
 	private TextField profileField;
 	@FXML
