@@ -100,7 +100,7 @@ public class ProfileOverviewController {
 			}
 
 		} else {
-			displayAlert(AlertType.WARNING, "No Selection", "No Profile Selected", "Please select a profile in the table.");
+			this.mainApp.displayAlert(AlertType.WARNING, "No Selection", "No Profile Selected", "Please select a profile in the table.");
 		}
 	}
 
@@ -109,7 +109,7 @@ public class ProfileOverviewController {
 		Profile selectedProfile = this.profileTable.getSelectionModel().getSelectedItem();
 		int selectedIndex = this.profileTable.getSelectionModel().getSelectedIndex();
 		if (selectedIndex >= 0) {
-			Optional<ButtonType> action = displayAlert(AlertType.CONFIRMATION,
+			Optional<ButtonType> action = this.mainApp.displayAlert(AlertType.CONFIRMATION,
 					"Deletion Confirmation",
 					null,
 					"Are you sure you want to delete the " + selectedProfile.getProfile().getValue() + " profile?");
@@ -119,13 +119,13 @@ public class ProfileOverviewController {
 				this.profileTable.sort();
 			}
 		} else {
-			displayAlert(AlertType.WARNING, "No Selection", "No Profile Selected", "Please select a profile in the table.");
+			this.mainApp.displayAlert(AlertType.WARNING, "No Selection", "No Profile Selected", "Please select a profile in the table.");
 		}
 	}
 
 	@FXML
 	private void handleRDSPassword() {
-		displayAlert(AlertType.INFORMATION, "Not Implemented", "", "This feature is not yet implemented.");
+		this.mainApp.displayAlert(AlertType.INFORMATION, "Not Implemented", "", "This feature is not yet implemented.");
 	}
 
 	@FXML
@@ -139,10 +139,10 @@ public class ProfileOverviewController {
 					this.mainApp.getSystemProfile().saveConfig();
 				}
 			} else {
-				displayAlert(AlertType.WARNING, "No MFA Serial Configured", "", "Please edit the profile and add an MFA Serial");
+				this.mainApp.displayAlert(AlertType.WARNING, "No MFA Serial Configured", "", "Please edit the profile and add an MFA Serial");
 			}
 		} else {
-			displayAlert(AlertType.WARNING, "No Selection", "No Profile Selected", "Please select a profile in the table.");
+			this.mainApp.displayAlert(AlertType.WARNING, "No Selection", "No Profile Selected", "Please select a profile in the table.");
 		}
 	}
 
@@ -155,22 +155,13 @@ public class ProfileOverviewController {
 					selectedProfile.getSession_token().getValue(),
 					selectedProfile.getRegion().getValue());
 			if (tester.testS3ListBuckets()) {
-				displayAlert(AlertType.INFORMATION, "S3 List Bucket Test Passed", "S3 List Bucket Test Passed", "");
+				this.mainApp.displayAlert(AlertType.INFORMATION, "S3 List Bucket Test Passed", "S3 List Bucket Test Passed", "");
 			} else {
-				displayAlert(AlertType.ERROR, "S3 List Bucket Test Failed", "S3 List Bucket Test Failed", "");
+				this.mainApp.displayAlert(AlertType.ERROR, "S3 List Bucket Test Failed", "S3 List Bucket Test Failed", "");
 			}
 		} else {
-			displayAlert(AlertType.WARNING, "No Selection", "No Profile Selected", "Please select a profile in the table.");
+			this.mainApp.displayAlert(AlertType.WARNING, "No Selection", "No Profile Selected", "Please select a profile in the table.");
 		}
-	}
-
-	private Optional<ButtonType> displayAlert(AlertType alertType, String title, String header, String content) {
-		Alert alert = new Alert(alertType);
-		alert.initOwner(this.mainApp.getPrimaryStage());
-		alert.setTitle(title);
-		alert.setHeaderText(header);
-		alert.setContentText(content);
-		return alert.showAndWait();
 	}
 
 	/**

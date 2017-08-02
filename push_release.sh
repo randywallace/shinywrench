@@ -6,7 +6,7 @@ sed -ri '0,/(<version>)[0-9]+\.[0-9]+\.[0-9]+(<\/version>)/s//\1'"$1"'\2/' pom.x
 
 git add pom.xml
 
-git commit -m 'v'"${1}"' Release'
+git commit --allow-empty -m 'v'"${1}"' Release'
 
 git tag -a -m 'v'"${1}"' Release' "${1}"
 

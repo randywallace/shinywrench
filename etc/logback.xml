@@ -1,3 +1,9 @@
+<!-- This is kinda pointless, as I can't load the JavaFXTextAreaAppender with the XML Configuration file
+     as attempting to do so will blow up JavaFX on a 'normal' startup 
+
+     It will work fine in an IDE, but not when run native.
+
+     See com.randywallace.shinywrench.logback.ConfigureLogback -->
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">

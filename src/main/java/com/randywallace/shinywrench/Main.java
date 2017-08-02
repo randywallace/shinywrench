@@ -1,7 +1,12 @@
 package com.randywallace.shinywrench;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Optional;
 
+import ch.qos.logback.classic.LoggerContext;
+import com.randywallace.shinywrench.logback.ConfigureLogback;
 import com.randywallace.shinywrench.logback.JavaFXTextAreaAppender;
 import com.randywallace.shinywrench.model.Profile;
 import com.randywallace.shinywrench.model.SystemProfile;
@@ -14,6 +19,9 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
@@ -35,6 +43,15 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 
+		ConfigureLogback.configure((LoggerContext) LoggerFactory.getILoggerFactory());
+		String uniqueAppId = "ShinyWrench";
+		try {
+			JUnique.acquireLock(uniqueAppId);
+		} catch (AlreadyLockedException e) {
+		    displayAlert(Alert.AlertType.INFORMATION, "Already Running", "Shiny Wrench is already running", null);
+			System.exit(1);
+		}
+
 		Platform.setImplicitExit(false);
 		
 		this.systemProfile = new SystemProfile();
@@ -42,6 +59,7 @@ public class Main extends Application {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Shiny Wrench - Developer AWS Credentials Configurator");
 
+		ConfigureLogback.addJavaFxAppender((LoggerContext) LoggerFactory.getILoggerFactory());
 		LOG.info("Starting up ShinyWrench");
 
 		switch (System.getProperty("os.name")) {
@@ -192,13 +210,6 @@ public class Main extends Application {
 	}
 
 	public static void main(String[] args) {
-		String uniqueAppId = "ShinyWrench";
-		try {
-			JUnique.acquireLock(uniqueAppId);
-		} catch (AlreadyLockedException e) {
-			LOG.error(uniqueAppId + " Already running! Bailing!");
-			System.exit(1);
-		}
 		launch(args);
 	}
 
@@ -206,4 +217,39 @@ public class Main extends Application {
 		return this.systemProfile;
 	}
 
+	public Optional<ButtonType> displayAlert(Alert.AlertType alertType, String title, String header, String content) {
+		Alert alert = new Alert(alertType);
+		alert.initOwner(this.getPrimaryStage());
+		alert.setTitle(title);
+		alert.setHeaderText(header);
+		alert.setContentText(content);
+		return alert.showAndWait();
+	}
+
+	public static void showExceptionDialog(Exception e) {
+
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setTitle("Exception Dialog");
+		alert.setHeaderText("An error occurred:");
+		String content = "Error: ";
+		if (null != e) {
+			content += e.toString() + "\n\n";
+		}
+		alert.setContentText(content);
+		Exception ex = new Exception(e);
+		//Create expandable Exception.
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw);
+		ex.printStackTrace(pw);
+		String exceptionText = sw.toString();
+		//Set up TextArea
+		TextArea textArea = new TextArea(exceptionText);
+		textArea.setEditable(false);
+		textArea.setWrapText(true);
+		textArea.setPrefHeight(600);
+		textArea.setPrefWidth(800);
+		//Set expandable Exception into the dialog pane.
+		alert.getDialogPane().setExpandableContent(textArea);
+		alert.showAndWait();
+	}
 }

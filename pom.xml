@@ -27,7 +27,10 @@
           <bundler>all</bundler>
           <needShortcut>true</needShortcut>
           <nativeReleaseVersion>${project.version}</nativeReleaseVersion>
-<!--     <additionalAppResources>${project.build.directory}/properties</additionalAppResources> -->
+          <!--<jvmArgs>
+            <jvmArg>-Dlogback.configurationFile=com/randywallace/shinywrench/logback.xml</jvmArg>
+          </jvmArgs>-->
+        <!--<additionalAppResources>${project.build.directory}/etc</additionalAppResources>-->
         </configuration>
         <executions>
           <execution>

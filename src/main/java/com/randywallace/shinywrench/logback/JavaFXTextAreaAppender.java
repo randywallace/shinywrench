@@ -20,25 +20,25 @@ public class JavaFXTextAreaAppender<E> extends UnsynchronizedAppenderBase<E> {
 
     @Override
     protected void append(E eventObject) {
-        if (!isStarted()) {
-            return;
-        }
-        String message = null;
-        try {
-            message = new String(this.encoder.encode(eventObject), "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        String finalMessage = message;
-        Platform.runLater( () ->
-          logTextArea.appendText(finalMessage)
-        );
+         if (!isStarted()) {
+             return;
+         }
+         byte[] encoded_event = this.encoder.encode(eventObject);
+         String message = null;
+         try {
+             message = new String(encoded_event, "UTF-8");
+         } catch (UnsupportedEncodingException e) {
+             e.printStackTrace();
+         }
+         String finalMessage = message;
+         Platform.runLater( () ->
+           logTextArea.appendText(finalMessage)
+         );
     }
 
     public static TextArea getLogtextArea() {
         return logTextArea;
     }
-
 
     public Encoder<E> getEncoder() {
         return encoder;
