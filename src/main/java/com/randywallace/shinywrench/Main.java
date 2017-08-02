@@ -39,11 +39,12 @@ public class Main extends Application {
 	private SystemProfile systemProfile;
 	private MainSystemTray systemTray;
 	static String MSG_OPEN = "open";
+	private ConfigureLogback logback_configurator;
 
 	@Override
 	public void start(Stage primaryStage) {
-
-		ConfigureLogback.configure((LoggerContext) LoggerFactory.getILoggerFactory());
+        this.logback_configurator = new ConfigureLogback();
+		this.logback_configurator.configure((LoggerContext) LoggerFactory.getILoggerFactory());
 		String uniqueAppId = "ShinyWrench";
 		try {
 			JUnique.acquireLock(uniqueAppId);
@@ -59,7 +60,7 @@ public class Main extends Application {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Shiny Wrench - Developer AWS Credentials Configurator");
 
-		ConfigureLogback.addJavaFxAppender((LoggerContext) LoggerFactory.getILoggerFactory());
+		this.logback_configurator.addJavaFxAppender((LoggerContext) LoggerFactory.getILoggerFactory());
 		LOG.info("Starting up ShinyWrench");
 
 		switch (System.getProperty("os.name")) {
@@ -114,7 +115,7 @@ public class Main extends Application {
 			Scene scene = new Scene(logView);
 			logStage.setScene(scene);
 			LogController logController = loader.getController();
-			logController.setTextArea(JavaFXTextAreaAppender.getLogtextArea());
+			logController.setTextArea(this.logback_configurator.getJavaFXappender().getLogtextArea());
 			logStage.show();
 
 		} catch (IOException e) {

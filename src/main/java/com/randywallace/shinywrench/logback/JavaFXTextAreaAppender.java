@@ -9,12 +9,12 @@ import java.io.UnsupportedEncodingException;
 
 public class JavaFXTextAreaAppender<E> extends UnsynchronizedAppenderBase<E> {
 
-    private static TextArea logTextArea;
+    private TextArea logTextArea;
     private Encoder<E> encoder;
 
     @Override
     public void start() {
-        logTextArea = new TextArea();
+        this.logTextArea = new TextArea();
         super.start();
     }
 
@@ -32,12 +32,12 @@ public class JavaFXTextAreaAppender<E> extends UnsynchronizedAppenderBase<E> {
          }
          String finalMessage = message;
          Platform.runLater( () ->
-           logTextArea.appendText(finalMessage)
+           this.logTextArea.appendText(finalMessage)
          );
     }
 
-    public static TextArea getLogtextArea() {
-        return logTextArea;
+    public TextArea getLogtextArea() {
+        return this.logTextArea;
     }
 
     public Encoder<E> getEncoder() {

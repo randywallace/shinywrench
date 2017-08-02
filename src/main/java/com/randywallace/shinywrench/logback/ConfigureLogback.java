@@ -15,10 +15,15 @@ import java.nio.charset.Charset;
 
 public class ConfigureLogback {
 
+    JavaFXTextAreaAppender javaFXappender;
+
+    public void ConfigureLogback() {
+        this.javaFXappender = new JavaFXTextAreaAppender<ILoggingEvent>();
+    }
     /*
      * Do not run this until JavaFX is starting (i.e. not in main)
      */
-    public static void addJavaFxAppender(LoggerContext loggerContext) {
+    public void addJavaFxAppender(LoggerContext loggerContext) {
         LayoutWrappingEncoder<ILoggingEvent> encoder = new LayoutWrappingEncoder<>();
         encoder.setCharset(Charset.forName("UTF-8"));
         encoder.setContext(loggerContext);
@@ -28,16 +33,16 @@ public class ConfigureLogback {
         layout.start();
         encoder.setLayout(layout);
         JavaFXTextAreaAppender<ILoggingEvent> ta;
-        ta = new JavaFXTextAreaAppender<>();
-        ta.setContext(loggerContext);
-        ta.setName("JavaFXTextArea");
-        ta.setEncoder(encoder);
-        ta.start();
+        this.javaFXappender = new JavaFXTextAreaAppender<>();
+        this.javaFXappender.setContext(loggerContext);
+        this.javaFXappender.setName("JavaFXTextArea");
+        this.javaFXappender.setEncoder(encoder);
+        this.javaFXappender.start();
         Logger rootLogger = loggerContext.getLogger(Logger.ROOT_LOGGER_NAME);
-        rootLogger.addAppender(ta);
+        rootLogger.addAppender(this.javaFXappender);
     }
 
-    public static void configure(LoggerContext loggerContext) {
+    public void configure(LoggerContext loggerContext) {
         System.out.println("Setting up Logback...");
         StatusManager statusManager = loggerContext.getStatusManager();
         if (statusManager != null) {
@@ -60,5 +65,9 @@ public class ConfigureLogback {
         rootLogger.detachAppender("console");
         rootLogger.addAppender(ca);
         rootLogger.setLevel(Level.INFO);
+    }
+
+    public JavaFXTextAreaAppender getJavaFXappender() {
+        return this.javaFXappender;
     }
 }
