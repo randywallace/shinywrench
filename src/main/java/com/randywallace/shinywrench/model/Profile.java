@@ -5,6 +5,13 @@ import javafx.beans.property.StringProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
 public class Profile {
 
 	private static Logger LOG = LoggerFactory.getLogger(Profile.class);
@@ -18,7 +25,7 @@ public class Profile {
 	private StringProperty role_arn;
 	private StringProperty source_profile;
 	private StringProperty mfa_serial;
-	private StringProperty expiration;
+	private SimpleStringProperty expiration;
 
 	public Profile(
 			String profile,
@@ -81,7 +88,7 @@ public class Profile {
 		return this.mfa_serial;
 	}
 
-	public StringProperty getExpiration() {
+	public SimpleStringProperty getExpiration() {
 		return this.expiration;
 	}
 
@@ -121,8 +128,21 @@ public class Profile {
 		this.mfa_serial = mfa_serial;
 	}
 
-	public void setExpiration(StringProperty expiration) {
-		this.expiration = expiration;
+	public void setExpiration(Date expiration) {
+		ZonedDateTime expiration_datetime = ZonedDateTime.ofInstant(expiration.toInstant(), ZoneId.systemDefault());
+		String expiration_string = DateTimeFormatter.ISO_DATE_TIME.format(expiration_datetime);
+		this.expiration = new SimpleStringProperty(expiration_string);
+	}
+
+	public long getExpirationMinutesFromNow() {
+		try {
+			LocalDateTime expiration_zoned_datetime = LocalDateTime.parse(this.expiration.getValue(), DateTimeFormatter.ISO_DATE_TIME);
+			long minutes_to_expire = Duration.between(LocalDateTime.now(), expiration_zoned_datetime).toMinutes();
+			return minutes_to_expire;
+		} catch (NullPointerException e) {
+			LOG.warn(this.profile.getValue() + " has no expiration");
+			return (long) 0;
+		}
 	}
 
 	@Override

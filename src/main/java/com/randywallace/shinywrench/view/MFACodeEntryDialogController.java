@@ -2,6 +2,7 @@ package com.randywallace.shinywrench.view;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
@@ -122,10 +123,7 @@ public class MFACodeEntryDialogController {
 						this.profile.setAccess_key_id(new SimpleStringProperty(this.sessionCredentials.getAccessKeyId()));
 						this.profile.setSecret_access_key(new SimpleStringProperty(this.sessionCredentials.getSecretAccessKey()));
 						this.profile.setSession_token(new SimpleStringProperty(this.sessionCredentials.getSessionToken()));
-						Date expiration_date = this.sessionCredentials.getExpiration();
-						LocalDateTime expiration_datetime = LocalDateTime.ofInstant(expiration_date.toInstant(), ZoneId.of("UTC"));
-						String expiration = DateTimeFormatter.ISO_DATE_TIME.format(expiration_datetime);
-						this.profile.setExpiration(new SimpleStringProperty(expiration));
+						this.profile.setExpiration(this.sessionCredentials.getExpiration());
 					} catch (AWSSecurityTokenServiceException e) {
 					    LOG.error(e.getMessage());
 						Alert alert = new Alert(AlertType.ERROR);

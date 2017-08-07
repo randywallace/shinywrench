@@ -6,14 +6,16 @@ import com.randywallace.shinywrench.Main;
 import com.randywallace.shinywrench.aws.TestAWSAccess;
 import com.randywallace.shinywrench.model.Profile;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.SortType;
 import javafx.scene.control.TableView;
+import javafx.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,6 +49,8 @@ public class ProfileOverviewController {
 	@FXML
 	private Label expirationLabel;
 
+	private Timeline watchExpiration;
+
 	// Reference to the main application.
 	private Main mainApp;
 
@@ -73,6 +77,24 @@ public class ProfileOverviewController {
 		// Listen for selection changes and show the person details when changed.
 		this.profileTable.getSelectionModel().selectedItemProperty().addListener(
 				(observable, oldValue, newValue) -> showProfileDetails(newValue));
+
+         startWatchingExpiration();
+	}
+
+	private void startWatchingExpiration() {
+		this.watchExpiration = new Timeline(
+			new KeyFrame(Duration.minutes(1), event -> {
+				this.expirationLabel.setText(
+					String.valueOf(this.profileTable.getSelectionModel().selectedItemProperty()
+						.get().getExpirationMinutesFromNow()));
+					LOG.info("Checked Expiration of profile " +
+						this.profileTable.getSelectionModel().selectedItemProperty().get().getProfile().getValue());
+				}
+			)
+		);
+
+		this.watchExpiration.setCycleCount(Timeline.INDEFINITE);
+		this.watchExpiration.play();
 	}
 
 	@FXML
@@ -188,7 +210,7 @@ public class ProfileOverviewController {
 			this.mfaSerialLabel.setText(profile.getMfa_serial().getValue());
 			this.sessionTokenLabel.setText(profile.getSession_token().getValue());
 			this.regionLabel.setText(profile.getRegion().getValue());
-			this.expirationLabel.setText(profile.getExpiration().getValue());
+			this.expirationLabel.setText(String.valueOf(profile.getExpirationMinutesFromNow()));
 		} else {
 			this.profileLabel.setText("");
 			this.accessKeyIdLabel.setText("");

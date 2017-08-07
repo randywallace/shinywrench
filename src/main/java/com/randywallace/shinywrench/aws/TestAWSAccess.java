@@ -35,7 +35,6 @@ public class TestAWSAccess {
 				.build();
 		try {
 			List<Bucket> response = s3_client.listBuckets();
-			System.out.println(response.size());
 			LOG.info("Found " + response.size() + " Buckets");
 			return true;
 		} catch (Exception e) {
