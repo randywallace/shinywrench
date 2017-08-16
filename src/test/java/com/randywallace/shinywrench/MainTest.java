@@ -1,4 +1,4 @@
-package shinywrench;
+package com.randywallace.shinywrench;
 
 import static org.junit.Assert.*;
 

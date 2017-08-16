@@ -7,7 +7,6 @@ import java.util.Optional;
 
 import ch.qos.logback.classic.LoggerContext;
 import com.randywallace.shinywrench.logback.ConfigureLogback;
-import com.randywallace.shinywrench.logback.JavaFXTextAreaAppender;
 import com.randywallace.shinywrench.model.Profile;
 import com.randywallace.shinywrench.model.SystemProfile;
 import com.randywallace.shinywrench.view.*;
@@ -55,7 +54,7 @@ public class Main extends Application {
 
 		Platform.setImplicitExit(false);
 		
-		this.systemProfile = new SystemProfile();
+		this.systemProfile = SystemProfile.getInstance();
 
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Shiny Wrench - Developer AWS Credentials Configurator");

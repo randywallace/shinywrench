@@ -10,6 +10,7 @@ import ch.qos.logback.core.ConsoleAppender;
 import ch.qos.logback.core.encoder.LayoutWrappingEncoder;
 import ch.qos.logback.core.status.InfoStatus;
 import ch.qos.logback.core.status.StatusManager;
+import org.slf4j.LoggerFactory;
 
 import java.nio.charset.Charset;
 
@@ -65,6 +66,10 @@ public class ConfigureLogback {
         rootLogger.detachAppender("console");
         rootLogger.addAppender(ca);
         rootLogger.setLevel(Level.INFO);
+    }
+
+    public void default_configure() {
+        configure((LoggerContext) LoggerFactory.getILoggerFactory());
     }
 
     public JavaFXTextAreaAppender getJavaFXappender() {

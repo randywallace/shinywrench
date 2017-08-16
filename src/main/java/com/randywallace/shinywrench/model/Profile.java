@@ -1,7 +1,9 @@
 package com.randywallace.shinywrench.model;
 
+import javafx.beans.Observable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.util.Callback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +27,7 @@ public class Profile {
 	private StringProperty role_arn;
 	private StringProperty source_profile;
 	private StringProperty mfa_serial;
-	private SimpleStringProperty expiration;
+	private StringProperty expiration;
 
 	public Profile(
 			String profile,
@@ -52,86 +54,126 @@ public class Profile {
 
 	}
 
-	public StringProperty getProfile() {
+	public String getProfile() {
+		return this.profile.get();
+	}
+
+	public void setProfile(String profile) {
+		this.profile.set(profile);
+	}
+
+	public StringProperty profileProperty() {
 		return this.profile;
 	}
 
-	public StringProperty getAccess_key_id() {
+	public String getAccessKeyId() {
+		return this.access_key_id.get();
+	}
+
+	public void setAccessKeyId(String access_key_id) {
+		this.access_key_id.set(access_key_id);
+	}
+
+	public StringProperty accessKeyIdProperty() {
 		return this.access_key_id;
 	}
 
-	public StringProperty getSecret_access_key() {
+	public String getSecretAccessKey() {
+		return this.secret_access_key.get();
+	}
+
+	public void setSecretAccessKey(String secret_access_key) {
+		this.secret_access_key.set(secret_access_key);
+	}
+
+	public StringProperty secretAccessKeyProperty() {
 		return this.secret_access_key;
 	}
 
-	public StringProperty getRegion() {
+	public String getRegion() {
+		return this.region.get();
+	}
+
+	public void setRegion(String region) {
+		this.region.set(region);
+	}
+
+	public StringProperty regionProperty() {
 		return this.region;
 	}
 
-	public StringProperty getOutput() {
+	public String getOutput() {
+		return this.output.get();
+	}
+
+	public void setOutput(String output) {
+		this.output.set(output);
+	}
+
+	public StringProperty outputProperty() {
 		return this.output;
 	}
 
-	public StringProperty getSession_token() {
+	public String getSessionToken() {
+		return this.session_token.get();
+	}
+
+	public void setSessionToken(String session_token) {
+		this.session_token.set(session_token);
+	}
+
+	public StringProperty sessionTokenProperty() {
 		return this.session_token;
 	}
 
-	public StringProperty getRole_arn() {
+	public String getRoleArn() {
+		return this.role_arn.get();
+	}
+
+	public void setRoleArn(String role_arn) {
+		this.role_arn.set(role_arn);
+	}
+
+	public StringProperty roleArnProperty() {
 		return this.role_arn;
 	}
 
-	public StringProperty getSource_profile() {
+	public String getSourceProfile() {
+		return this.source_profile.get();
+	}
+
+	public void setSourceProfile(String source_profile) {
+		this.source_profile.set(source_profile);
+	}
+
+	public StringProperty sourceProfileProperty() {
 		return this.source_profile;
 	}
 
-	public StringProperty getMfa_serial() {
+	public String getMfaSerial() {
+		return this.mfa_serial.get();
+	}
+
+	public void setMfaSerial(String mfa_serial) {
+		this.mfa_serial.set(mfa_serial);
+	}
+
+	public StringProperty mfaSerialProperty() {
 		return this.mfa_serial;
 	}
 
-	public SimpleStringProperty getExpiration() {
+	public String getExpiration() {
+		return this.expiration.get();
+	}
+
+	public StringProperty expirationProperty() {
 		return this.expiration;
-	}
-
-	public void setProfile(StringProperty profile) {
-		this.profile = profile;
-	}
-
-	public void setAccess_key_id(StringProperty access_key_id) {
-		this.access_key_id = access_key_id;
-	}
-
-	public void setSecret_access_key(StringProperty secret_access_key) {
-		this.secret_access_key = secret_access_key;
-	}
-
-	public void setRegion(StringProperty region) {
-		this.region = region;
-	}
-
-	public void setOutput(StringProperty output) {
-		this.output = output;
-	}
-
-	public void setSession_token(StringProperty session_token) {
-		this.session_token = session_token;
-	}
-
-	public void setRole_arn(StringProperty role_arn) {
-		this.role_arn = role_arn;
-	}
-
-	public void setSource_profile(StringProperty source_profile) {
-		this.source_profile = source_profile;
-	}
-
-	public void setMfa_serial(StringProperty mfa_serial) {
-		this.mfa_serial = mfa_serial;
 	}
 
 	public void setExpiration(Date expiration) {
 		ZonedDateTime expiration_datetime = ZonedDateTime.ofInstant(expiration.toInstant(), ZoneId.systemDefault());
 		String expiration_string = DateTimeFormatter.ISO_DATE_TIME.format(expiration_datetime);
-		this.expiration = new SimpleStringProperty(expiration_string);
+		this.expiration.set(expiration_string);
 	}
 
 	public long getExpirationMinutesFromNow() {
@@ -150,4 +192,18 @@ public class Profile {
 		return "Profile [profile=" + this.profile + ", access_key_id=" + this.access_key_id + ", secret_access_key=" + this.secret_access_key + ", region=" + this.region + ", output=" + this.output + ", session_token=" + this.session_token + ", role_arn=" + this.role_arn + ", source_profile=" + this.source_profile + ", mfa_serial=" + this.mfa_serial + ", expiration=" + this.expiration + "]";
 	}
 
+	public static Callback<Profile, Observable[]> extractor() {
+		return (Profile p) -> new Observable[]{
+				p.profileProperty(),
+				p.accessKeyIdProperty(),
+				p.secretAccessKeyProperty(),
+                p.regionProperty(),
+				p.outputProperty(),
+				p.sessionTokenProperty(),
+				p.roleArnProperty(),
+				p.sourceProfileProperty(),
+				p.mfaSerialProperty(),
+				p.expirationProperty()
+		};
+	}
 }

@@ -53,18 +53,18 @@ public class ProfileEditDialogController {
 	/**
 	 * Sets the person to be edited in the dialog.
 	 * 
-	 * @param person
+	 * @param profile
 	 */
 	public void setPerson(Profile profile) {
 		this.profile = profile;
 
-		this.profileField.setText(profile.getProfile().getValue());
-		this.accessKeyIdField.setText(profile.getAccess_key_id().getValue());
-		this.secretAccessKeyField.setText(profile.getSecret_access_key().getValue());
-		this.sessionTokenField.setText(profile.getSession_token().getValue());
-		this.regionField.setText(profile.getRegion().getValue());
-		this.mfaSerialField.setText(profile.getMfa_serial().getValue());
-		this.sourceProfileField.setText(profile.getSource_profile().getValue());
+		this.profileField.setText(profile.getProfile());
+		this.accessKeyIdField.setText(profile.getAccessKeyId());
+		this.secretAccessKeyField.setText(profile.getSecretAccessKey());
+		this.sessionTokenField.setText(profile.getSessionToken());
+		this.regionField.setText(profile.getRegion());
+		this.mfaSerialField.setText(profile.getMfaSerial());
+		this.sourceProfileField.setText(profile.getSourceProfile());
 	}
 
 	/**
@@ -82,17 +82,17 @@ public class ProfileEditDialogController {
 	@FXML
 	private void handleOk() {
 		if (isInputValid()) {
-			this.profile.setProfile(new SimpleStringProperty(this.profileField.getText()));
-			this.profile.setAccess_key_id(new SimpleStringProperty(this.accessKeyIdField.getText()));
-			this.profile.setSecret_access_key(new SimpleStringProperty(this.secretAccessKeyField.getText()));
-			this.profile.setSession_token(new SimpleStringProperty(this.sessionTokenField.getText()));
+			this.profile.setProfile(this.profileField.getText());
+			this.profile.setAccessKeyId(this.accessKeyIdField.getText());
+			this.profile.setSecretAccessKey(this.secretAccessKeyField.getText());
+			this.profile.setSessionToken(this.sessionTokenField.getText());
 			if ( this.regionField.getText() == null || this.regionField.getText().isEmpty()) {
-				this.profile.setRegion(new SimpleStringProperty("us-east-1"));
+				this.profile.setRegion("us-east-1");
 			} else {
-				this.profile.setRegion(new SimpleStringProperty(this.regionField.getText()));
+				this.profile.setRegion(this.regionField.getText());
 			}
-			this.profile.setMfa_serial(new SimpleStringProperty(this.mfaSerialField.getText()));
-			this.profile.setSource_profile(new SimpleStringProperty(this.sourceProfileField.getText()));
+			this.profile.setMfaSerial(this.mfaSerialField.getText());
+			this.profile.setSourceProfile(this.sourceProfileField.getText());
 
 			this.okClicked = true;
 			this.dialogStage.close();

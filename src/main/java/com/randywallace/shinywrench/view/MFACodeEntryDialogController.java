@@ -64,20 +64,20 @@ public class MFACodeEntryDialogController {
 
 	public void setCurrentProfile(Profile profile) {
 		this.profile = profile;
-		this.currentProfile.setText(profile.getProfile().getValue());
+		this.currentProfile.setText(profile.getProfile());
 	}
 
 	public void setAvailableProfiles(ObservableList<Profile> profileList) {
 		this.profileList = profileList;
 		for (Profile entry : this.profileList) {
-			if (!this.profile.getProfile().getValue().equals(entry.getProfile().getValue())) {
-				this.sourceProfileChoices.getItems().add(entry.getProfile().getValue());
+			if (!this.profile.getProfile().equals(entry.getProfile())) {
+				this.sourceProfileChoices.getItems().add(entry.getProfile());
 			}
 		}
-		if ((this.profile.getSource_profile().getValue() != null) && !this.profile.getSource_profile().getValue().isEmpty()) {
+		if ((this.profile.getSourceProfile() != null) && !this.profile.getSourceProfile().isEmpty()) {
 			for (Profile entry : this.profileList) {
-				if (this.profile.getSource_profile().getValue().equals(entry.getProfile().getValue())) {
-					this.sourceProfileChoices.getSelectionModel().select(entry.getProfile().getValue());
+				if (this.profile.getSourceProfile().equals(entry.getProfile())) {
+					this.sourceProfileChoices.getSelectionModel().select(entry.getProfile());
 				}
 			}
 		}
@@ -103,26 +103,26 @@ public class MFACodeEntryDialogController {
 	private void handleOk() {
 		if (isInputValid()) {
 			this.mfaCode = this.mfaCodeField.getText();
-			SimpleStringProperty source_profile_selection = new SimpleStringProperty(this.sourceProfileChoices.getSelectionModel().getSelectedItem());
+			String source_profile_selection = this.sourceProfileChoices.getSelectionModel().getSelectedItem();
 			String access_key_id = null;
 			String secret_access_key = null;
 			String region = null;
 			String mfa_serial = null;
-			this.profile.setSource_profile(source_profile_selection);
+			this.profile.setSourceProfile(source_profile_selection);
 			for (Profile entry : this.profileList) {
-				if (entry.getProfile().getValue().equals(source_profile_selection.getValue())) {
+				if (entry.getProfile().equals(source_profile_selection)) {
 
-					access_key_id = entry.getAccess_key_id().getValue();
-					secret_access_key = entry.getSecret_access_key().getValue();
-					region = this.profile.getRegion().getValue();
-					mfa_serial = this.profile.getMfa_serial().getValue();
-					LOG.debug(source_profile_selection.getValue() + " " + access_key_id + " " + secret_access_key + " " + region + " " + mfa_serial + " " + this.mfaCode);
+					access_key_id = entry.getAccessKeyId();
+					secret_access_key = entry.getSecretAccessKey();
+					region = this.profile.getRegion();
+					mfa_serial = this.profile.getMfaSerial();
+					LOG.debug(source_profile_selection + " " + access_key_id + " " + secret_access_key + " " + region + " " + mfa_serial + " " + this.mfaCode);
 					try {
 						this.sessionCredentials = new GenerateSessionCredentials(access_key_id, secret_access_key, region)
 								.getMFACredentials(mfa_serial, this.mfaCode);
-						this.profile.setAccess_key_id(new SimpleStringProperty(this.sessionCredentials.getAccessKeyId()));
-						this.profile.setSecret_access_key(new SimpleStringProperty(this.sessionCredentials.getSecretAccessKey()));
-						this.profile.setSession_token(new SimpleStringProperty(this.sessionCredentials.getSessionToken()));
+						this.profile.setAccessKeyId(this.sessionCredentials.getAccessKeyId());
+						this.profile.setSecretAccessKey(this.sessionCredentials.getSecretAccessKey());
+						this.profile.setSessionToken(this.sessionCredentials.getSessionToken());
 						this.profile.setExpiration(this.sessionCredentials.getExpiration());
 					} catch (AWSSecurityTokenServiceException e) {
 					    LOG.error(e.getMessage());
